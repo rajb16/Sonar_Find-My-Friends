@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import _ from "lodash";
@@ -65,58 +65,74 @@ const renderMarkers = () => {
 
   return renderedMarkers;
 };
-const App = () => {
+export default App = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [lat, setLatitude] = useState(0);
   const [long, setLongitude] = useState(0);
-  console.log(lat);
-  console.log(long);
+  const [time, setTime] = useState(Date.now());
+
+  const getPermissions = async () => {
+    const interval = setInterval(() => setTime(Date.now()), 5000);
+    console.log(interval);
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      console.log(status);
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      const last = await Location.getLastKnownPositionAsync();
+      if (last) {
+        setLatitude(last.coords.latitude);
+        setLongitude(last.coords.longitude);
+        console.log("Last Known Location");
+        setLocation(last);
+      } else {
+        console.log("Current Location");
+        let location = await Location.getCurrentPositionAsync();
+
+        if (
+          location.coords.latitude !== null &&
+          location.coords.longitude !== null
+        ) {
+          // console.log(location.coords.latitude);
+          // console.log(location.coords.longitude);
+
+          setLatitude(location.coords.latitude);
+          setLongitude(location.coords.longitude);
+        }
+        setLocation(location);
+      }
+    } catch (e) {
+      console.log("Unable to get location", e);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  };
+  useEffect(() => {
+    getPermissions();
+  }, []);
+
+  let text = "Waiting..";
+  if (errorMsg) {
+    // console.log(errorMsg);
+    text = errorMsg;
+  }
+  if (location) {
+    text = JSON.stringify(location);
+  }
+  console.log(text);
+
   const myMarker = {
     latitude: lat,
     longitude: long,
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   };
-  useEffect(() => {
-    const getPermissions = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
-      if (
-        location.coords.latitude !== null &&
-        location.coords.longitude !== null
-      ) {
-        console.log(location.coords.latitude);
-        console.log(location.coords.longitude);
-        setLatitude(location.coords.latitude);
-        // setLoc({ latitude: location.coords.latitude });
-        setLongitude(location.coords.longitude);
-        // setLoc({ longitude: location.coords.longitude });
-      } else {
-        console.log("Unable to get location");
-      }
-
-      setLocation(location);
-    };
-    getPermissions();
-  }, []);
-
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
-  console.log(text);
-
-  console.log();
-  console.log();
 
   return (
     <View style={styles.container}>
@@ -138,7 +154,7 @@ const App = () => {
     </View>
   );
 };
-export default App;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
