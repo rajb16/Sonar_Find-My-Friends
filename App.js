@@ -68,8 +68,8 @@ const renderMarkers = () => {
 const App = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [lat, setLatitude] = useState(null);
-  const [long, setLongitude] = useState(null);
+  const [lat, setLatitude] = useState(0);
+  const [long, setLongitude] = useState(0);
   console.log(lat);
   console.log(long);
   const myMarker = {
@@ -93,6 +93,7 @@ const App = () => {
         location.coords.longitude !== null
       ) {
         console.log(location.coords.latitude);
+        console.log(location.coords.longitude);
         setLatitude(location.coords.latitude);
         // setLoc({ latitude: location.coords.latitude });
         setLongitude(location.coords.longitude);
