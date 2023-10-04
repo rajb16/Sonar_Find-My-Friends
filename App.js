@@ -68,9 +68,9 @@ const renderMarkers = () => {
 };
 let tempLat = 0;
 let tempLong = 0;
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+// function delay(ms) {
+//   return new Promise((resolve) => setTimeout(resolve, ms));
+// }
 export default App = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -81,7 +81,7 @@ export default App = () => {
   const getPermissions = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      console.log(status);
+      console.log("Permission status: ", status);
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
@@ -104,12 +104,9 @@ export default App = () => {
         // console.log(location.coords.latitude);
         // console.log(location.coords.longitude);
         console.log("Current Location Stored");
-        if (lat !== location.coords.latitude) {
-          setLatitude(location.coords.latitude);
-        }
-        if (long !== location.coords.longitude) {
-          setLongitude(location.coords.longitude);
-        }
+        setLatitude(location.coords.latitude);
+
+        setLongitude(location.coords.longitude);
 
         // await delay(6000);
         setLocation(location);
@@ -135,11 +132,11 @@ export default App = () => {
   if (location) {
     text = JSON.stringify(location);
   }
-  if (Math.round(tempLong * 1000) / 100 !== Math.round(long * 1000) / 100) {
+  if (+tempLong.toFixed(4) !== +long.toFixed(4)) {
     tempLong = long;
     console.log("Changing Longitude to: ", tempLong);
   }
-  if (Math.round(tempLat * 1000) / 100 !== Math.round(lat * 1000) / 100) {
+  if (+tempLat.toFixed(4) !== +lat.toFixed(4)) {
     tempLat = lat;
     console.log("Changing Latitude to: ", tempLat);
   }
@@ -158,6 +155,7 @@ export default App = () => {
         // userInterfaceStyle={"dark"}
         customMapStyle={mapStyle}
         showsUserLocation={true}
+        provider="google"
       >
         {renderMarkers()}
         <Marker coordinate={myMarker}>
