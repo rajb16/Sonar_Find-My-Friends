@@ -14,7 +14,8 @@ const markerList = [
   {
     id: 1,
     username: "Francis",
-    description: " x",
+    description:
+      "https://media.geeksforgeeks.org/wp-content/uploads/20230306120634/unnamed.jpg",
     coordinate: {
       latitude: 39.710579,
       longitude: -75.120261,
@@ -65,6 +66,11 @@ const renderMarkers = () => {
 
   return renderedMarkers;
 };
+let tempLat = 0;
+let tempLong = 0;
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 export default App = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -73,8 +79,6 @@ export default App = () => {
   const [time, setTime] = useState(Date.now());
 
   const getPermissions = async () => {
-    const interval = setInterval(() => setTime(Date.now()), 5000);
-    console.log(interval);
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       console.log(status);
@@ -83,53 +87,65 @@ export default App = () => {
         return;
       }
 
-      const last = await Location.getLastKnownPositionAsync();
-      if (last) {
-        setLatitude(last.coords.latitude);
-        setLongitude(last.coords.longitude);
-        console.log("Last Known Location");
-        setLocation(last);
-      } else {
-        console.log("Current Location");
-        let location = await Location.getCurrentPositionAsync();
+      // const last = await Location.getLastKnownPositionAsync();
 
-        if (
-          location.coords.latitude !== null &&
-          location.coords.longitude !== null
-        ) {
-          // console.log(location.coords.latitude);
-          // console.log(location.coords.longitude);
+      // if (last) {
+      //   setLatitude(last.coords.latitude);
+      //   setLongitude(last.coords.longitude);
+      //   console.log("Last Known Location");
+      //   setLocation(last);
+      // } else {
 
+      let location = await Location.getCurrentPositionAsync({});
+      if (
+        location.coords.latitude !== null &&
+        location.coords.longitude !== null
+      ) {
+        // console.log(location.coords.latitude);
+        // console.log(location.coords.longitude);
+        console.log("Current Location Stored");
+        if (lat !== location.coords.latitude) {
           setLatitude(location.coords.latitude);
+        }
+        if (long !== location.coords.longitude) {
           setLongitude(location.coords.longitude);
         }
+
+        // await delay(6000);
         setLocation(location);
       }
     } catch (e) {
       console.log("Unable to get location", e);
     }
-
-    return () => {
-      clearInterval(interval);
-    };
   };
-  useEffect(() => {
-    getPermissions();
-  }, []);
 
+  useEffect(() => {
+    const MINUTE_MS = 1000;
+    const interval = setInterval(() => {
+      getPermissions();
+    }, MINUTE_MS);
+
+    return () => clearInterval(interval);
+  }, []);
   let text = "Waiting..";
   if (errorMsg) {
-    // console.log(errorMsg);
+    console.log(errorMsg);
     text = errorMsg;
   }
   if (location) {
     text = JSON.stringify(location);
   }
-  console.log(text);
-
+  if (Math.round(tempLong * 1000) / 100 !== Math.round(long * 1000) / 100) {
+    tempLong = long;
+    console.log("Changing Longitude to: ", tempLong);
+  }
+  if (Math.round(tempLat * 1000) / 100 !== Math.round(lat * 1000) / 100) {
+    tempLat = lat;
+    console.log("Changing Latitude to: ", tempLat);
+  }
   const myMarker = {
-    latitude: lat,
-    longitude: long,
+    latitude: tempLat,
+    longitude: tempLong,
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   };
