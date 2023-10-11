@@ -1,18 +1,17 @@
 import React, { useState, useEffect, Component } from "react";
 import { View, StyleSheet, Image } from "react-native";
-
 import _ from "lodash";
-
 import { NavigationContainer } from "@react-navigation/native";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./HomeScreen.js";
 
 const Stack = createNativeStackNavigator();
+
 const getIsSignedIn = () => {
   // custom logic
   return true;
 };
+
 export default App = () => {
   const isSignedIn = getIsSignedIn();
   return (

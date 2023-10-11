@@ -1,9 +1,10 @@
 import * as Location from "expo-location";
 import mapStyle from "./mapStyle1.json";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { View, StyleSheet, Image } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
+import { View, StyleSheet, Image, Text, Button } from "react-native";
 import React, { useState, useEffect, Component } from "react";
 import _ from "lodash";
+import PickImage from "./ImagePicker.js";
 /**
  *  Temp list containing the ID, location coordinates, and
  *  username of a user
@@ -85,14 +86,11 @@ export default function HomeScreen() {
         location.coords.latitude !== null &&
         location.coords.longitude !== null
       ) {
-        // console.log(location.coords.latitude);
-        // console.log(location.coords.longitude);
         console.log("Current Location Stored");
         setLatitude(location.coords.latitude);
 
         setLongitude(location.coords.longitude);
 
-        // await delay(6000);
         setLocation(location);
       }
     } catch (e) {
@@ -147,6 +145,7 @@ export default function HomeScreen() {
           />
         </Marker>
       </MapView>
+      {PickImage()}
     </View>
   );
 }
@@ -154,5 +153,16 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  buttonCallout: {
+    flex: 1,
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 10,
+    alignSelf: "center",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+    borderWidth: 0.5,
+    borderRadius: 20,
   },
 });
