@@ -3,9 +3,9 @@ import { View, StyleSheet, Image } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import _ from "lodash";
 import mapStyle from "./mapStyle1.json";
-
+import { NavigationContainer } from "@react-navigation/native";
 import * as Location from "expo-location";
-
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 /**
  *  Temp list containing the ID, location coordinates, and
  *  username of a user
@@ -50,6 +50,33 @@ const markerList = [
   },
 ];
 
+const Stack = createNativeStackNavigator();
+const getIsSignedIn = () => {
+  // custom logic
+  return true;
+};
+export default App = () => {
+  const isSignedIn = getIsSignedIn();
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isSignedIn ? (
+          <>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const renderMarkers = () => {
   const renderedMarkers = _.map(markerList, (marker) => {
     const { username, description, coordinate, id } = marker;
@@ -68,16 +95,12 @@ const renderMarkers = () => {
 };
 let tempLat = 0;
 let tempLong = 0;
-// function delay(ms) {
-//   return new Promise((resolve) => setTimeout(resolve, ms));
-// }
-export default App = () => {
+const HomeScreen = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [lat, setLatitude] = useState(0);
   const [long, setLongitude] = useState(0);
   const [time, setTime] = useState(Date.now());
-
   const getPermissions = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -86,15 +109,6 @@ export default App = () => {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
-      // const last = await Location.getLastKnownPositionAsync();
-
-      // if (last) {
-      //   setLatitude(last.coords.latitude);
-      //   setLongitude(last.coords.longitude);
-      //   console.log("Last Known Location");
-      //   setLocation(last);
-      // } else {
 
       let location = await Location.getCurrentPositionAsync({});
       if (
@@ -115,7 +129,6 @@ export default App = () => {
       console.log("Unable to get location", e);
     }
   };
-
   useEffect(() => {
     const MINUTE_MS = 1000;
     const interval = setInterval(() => {
@@ -134,28 +147,27 @@ export default App = () => {
   }
   if (+tempLong.toFixed(4) !== +long.toFixed(4)) {
     tempLong = long;
-    console.log("Changing Longitude to: ", tempLong);
+    console.log("Adjusting Longitude to: ", tempLong);
   }
   if (+tempLat.toFixed(4) !== +lat.toFixed(4)) {
     tempLat = lat;
-    console.log("Changing Latitude to: ", tempLat);
+    console.log("Adjusting Latitude to: ", tempLat);
   }
+
   const myMarker = {
     latitude: tempLat,
     longitude: tempLong,
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   };
-
   return (
     <View style={styles.container}>
       <MapView
         style={{ alignSelf: "stretch", height: "100%" }}
         region={myMarker}
-        // userInterfaceStyle={"dark"}
         customMapStyle={mapStyle}
-        showsUserLocation={true}
-        provider="google"
+        showsUserLocation={false}
+        showsCompass={false}
       >
         {renderMarkers()}
         <Marker coordinate={myMarker}>
@@ -168,6 +180,22 @@ export default App = () => {
     </View>
   );
 };
+
+function ProfileScreen() {
+  return <View />;
+}
+
+function SettingsScreen() {
+  return <View />;
+}
+
+function SignInScreen() {
+  return <View />;
+}
+
+function SignUpScreen() {
+  return <View />;
+}
 
 const styles = StyleSheet.create({
   container: {
