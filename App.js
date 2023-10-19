@@ -16,7 +16,8 @@ export default App = () => {
   const isSignedIn = getIsSignedIn();
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      {/* screenOptions={{ headerShown: false }} */}
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isSignedIn ? (
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -37,7 +38,6 @@ export default App = () => {
 function ProfileScreen() {
   return <View />;
 }
-
 function SettingsScreen() {
   return <View />;
 }

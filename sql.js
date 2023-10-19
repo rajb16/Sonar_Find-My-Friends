@@ -1,11 +1,13 @@
-const pool = require('./database'); // Import the MySQL connection pool
+const pool = require("./database"); // Import the MySQL connection pool
 
 // Function to add a new user to the Users table.
 const addUser = (username, password, fullName, email, latitude, longitude) => {
-  const sql = 'INSERT INTO Users (Username, Password, FullName, Email, Latitude, Longitude) VALUES (?, ?, ?, ?, ?, ?)';
+  const sql =
+    "INSERT INTO Users (Username, Password, FullName, Email, Latitude, Longitude) VALUES (?, ?, ?, ?, ?, ?)";
   const values = [username, password, fullName, email, latitude, longitude];
 
-  return pool.execute(sql, values)
+  return pool
+    .execute(sql, values)
     .then(([rows]) => {
       if (rows.affectedRows > 0) {
         return true; // User added successfully
@@ -20,10 +22,11 @@ const addUser = (username, password, fullName, email, latitude, longitude) => {
 
 // Function to get an existing user's information by username.
 const getUserByUsername = (username) => {
-  const sql = 'SELECT * FROM Users WHERE Username = ?';
+  const sql = "SELECT * FROM Users WHERE Username = ?";
   const values = [username];
 
-  return pool.execute(sql, values)
+  return pool
+    .execute(sql, values)
     .then(([rows]) => {
       if (rows.length > 0) {
         const user = rows[0];
@@ -39,10 +42,12 @@ const getUserByUsername = (username) => {
 
 // Function to send a friend request.
 const sendFriendRequest = (senderUserID, receiverUserID) => {
-  const sql = 'INSERT INTO Friendships (SenderUserID, ReceiverUserID, Status) VALUES (?, ?, ?)';
-  const values = [senderUserID, receiverUserID, 'requested'];
+  const sql =
+    "INSERT INTO Friendships (SenderUserID, ReceiverUserID, Status) VALUES (?, ?, ?)";
+  const values = [senderUserID, receiverUserID, "requested"];
 
-  return pool.execute(sql, values)
+  return pool
+    .execute(sql, values)
     .then(([rows]) => {
       if (rows.affectedRows > 0) {
         return true; // Friend request sent successfully
@@ -57,10 +62,11 @@ const sendFriendRequest = (senderUserID, receiverUserID) => {
 
 // Function to accept a friend request.
 const acceptFriendRequest = (friendshipID) => {
-  const sql = 'UPDATE Friendships SET Status = ? WHERE FriendshipID = ?';
-  const values = ['accepted', friendshipID];
+  const sql = "UPDATE Friendships SET Status = ? WHERE FriendshipID = ?";
+  const values = ["accepted", friendshipID];
 
-  return pool.execute(sql, values)
+  return pool
+    .execute(sql, values)
     .then(([rows]) => {
       if (rows.affectedRows > 0) {
         return true; // Friend request accepted successfully
@@ -75,10 +81,12 @@ const acceptFriendRequest = (friendshipID) => {
 
 // Function to retrieve a user's friends.
 const getUserFriends = (userID) => {
-  const sql = 'SELECT U.* FROM Users U INNER JOIN Friendships F ON U.UserID = F.ReceiverUserID WHERE F.SenderUserID = ? AND F.Status = "accepted"';
+  const sql =
+    'SELECT U.* FROM Users U INNER JOIN Friendships F ON U.UserID = F.ReceiverUserID WHERE F.SenderUserID = ? AND F.Status = "accepted"';
   const values = [userID];
 
-  return pool.execute(sql, values)
+  return pool
+    .execute(sql, values)
     .then(([rows]) => {
       const friends = rows;
       return friends;
@@ -90,10 +98,11 @@ const getUserFriends = (userID) => {
 
 // Function to retrieve a user's posts (stories).
 const getUserPosts = (userID) => {
-  const sql = 'SELECT * FROM Stories WHERE UserID = ?';
+  const sql = "SELECT * FROM Stories WHERE UserID = ?";
   const values = [userID];
 
-  return pool.execute(sql, values)
+  return pool
+    .execute(sql, values)
     .then(([rows]) => {
       const posts = rows;
       return posts;

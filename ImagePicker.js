@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Callout } from "react-native-maps";
+import Entypo from "react-native-vector-icons/Entypo";
 
 export default function PickImage() {
   const [image, setImage] = useState(null);
@@ -18,11 +19,11 @@ export default function PickImage() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      //   aspect: [16, 9],
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -30,14 +31,25 @@ export default function PickImage() {
   };
 
   return (
-    <Callout style={styles.buttonCallout}>
-      <TouchableOpacity
-        style={[styles.touchable]}
-        //   onPress={() => console.log("press")}
-        onPress={pickImage}
-      >
-        <Text style={styles.touchableText}>Press me</Text>
-      </TouchableOpacity>
+    <Callout>
+      <View style={styles.buttonCallout}>
+        <TouchableOpacity>
+          <View style={{ paddingLeft: "10%", width: 55 }}>
+            {/* <Text style={styles.touchableText}>📷</Text> */}
+            <Entypo.Button
+              name="camera"
+              backgroundColor={"transparent"}
+              onPress={pickImage}
+              suppressHighlighting={false}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={{ paddingLeft: "20%", width: 50, size: 30 }}>
+        <TouchableOpacity>
+          <Text style={styles.touchableText}>👤</Text>
+        </TouchableOpacity>
+      </View>
     </Callout>
   );
 }
@@ -47,16 +59,19 @@ const styles = StyleSheet.create({
   },
   buttonCallout: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     position: "absolute",
-    bottom: 10,
-    alignSelf: "center",
-    justifyContent: "space-between",
+    bottom: 40,
+    // marginRight: "10%",
+    // paddingLeft: 10,
+    // justifyContent: "center",
     backgroundColor: "transparent",
-    borderWidth: 0.5,
-    borderRadius: 20,
+    // borderWidth: 0.5,
+    // borderRadius: 20,
   },
   touchableText: {
     fontSize: 24,
+    color: "white",
   },
+  callout: {},
 });
