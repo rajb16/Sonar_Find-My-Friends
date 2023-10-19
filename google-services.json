@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "352910718189",
+    "project_id": "find-my-friend-e9f17",
+    "storage_bucket": "find-my-friend-e9f17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352910718189:android:9a5a76f55a7fa3778588e4",
+        "android_client_info": {
+          "package_name": "com.capstone.findmyfriend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw31d6OMlEELFEYYji4RPVKSk7yyFeius"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
