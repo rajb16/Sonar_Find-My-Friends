@@ -1,10 +1,12 @@
 import * as Location from "expo-location";
 import mapStyle from "./mapStyle1.json";
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
-import { View, StyleSheet, Image, Text, Button } from "react-native";
+import { View, StyleSheet, Image, Text, Button, Modal } from "react-native";
 import React, { useState, useEffect, Component } from "react";
 import _ from "lodash";
-import PickImage from "./ImagePicker.js";
+
+import ModalOverlay from "./ModalOverlay";
+
 /**
  *  Temp list containing the ID, location coordinates, and
  *  username of a user
@@ -75,7 +77,7 @@ export default function HomeScreen() {
   const getPermissions = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      console.log("Permission status: ", status);
+      // console.log("Permission status: ", status);
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
@@ -86,7 +88,7 @@ export default function HomeScreen() {
         location.coords.latitude !== null &&
         location.coords.longitude !== null
       ) {
-        console.log("Current Location Stored");
+        // console.log("Current Location Stored");
         setLatitude(location.coords.latitude);
 
         setLongitude(location.coords.longitude);
@@ -145,7 +147,7 @@ export default function HomeScreen() {
           />
         </Marker>
       </MapView>
-      {PickImage()}
+      <View>{ModalOverlay()}</View>
     </View>
   );
 }
@@ -153,16 +155,5 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  buttonCallout: {
-    flex: 1,
-    flexDirection: "row",
-    position: "absolute",
-    bottom: 10,
-    alignSelf: "center",
-    justifyContent: "space-between",
-    backgroundColor: "transparent",
-    borderWidth: 0.5,
-    borderRadius: 20,
   },
 });
