@@ -4,6 +4,7 @@ import _ from "lodash";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./HomeScreen.js";
+import SignInScreen from "./SignInScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,10 +40,6 @@ function ProfileScreen() {
 }
 
 function SettingsScreen() {
-  return <View />;
-}
-
-function SignInScreen() {
   return <View />;
 }
 
