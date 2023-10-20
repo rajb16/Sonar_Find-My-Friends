@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
     // backgroundColor: "rgba( 50, 65, 96, 0.8)",
     backgroundColor: "#02c47d",
     // borderWidth: 2,
-    marginLeft: "85%",
-    marginTop: "126%",
+    marginLeft: "82%",
+    marginTop: "120%",
     borderRadius: 30,
     shadowColor: "#000",
     shadowOffset: {
