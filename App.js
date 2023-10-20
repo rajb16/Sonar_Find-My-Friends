@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./HomeScreen.js";
 import SignInScreen from "./SignInScreen.js";
+import ProfileScreen from "./ProfileScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,9 +37,6 @@ export default App = () => {
   );
 };
 
-function ProfileScreen() {
-  return <View />;
-}
 function SettingsScreen() {
   return <View />;
 }
