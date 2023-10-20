@@ -1,9 +1,37 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { FIREBASE_AUTH } from './firebaseConfig';
+import { signInWithEmailAndPassword } from '@firebase/auth';
 
 export default function SignInScreen() {
+  
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  const createAccount = async () => {
+    try {
+      await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      console.log('User registered successfully');
+      navigation.navigate('Home');
+
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const signIn = async () => {
+    try {
+      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      console.log('User registered successfully');
+      navigation.navigate('Home');
+
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
 
   return (
     <View style={styles.screen}>
@@ -24,8 +52,8 @@ export default function SignInScreen() {
         secureTextEntry={true}
       />
       <View style={styles.buttons}>
-        <Button title="signin" />
-        <Button title="Create"  />
+        <Button title="signin" onPress={signIn}  />
+        <Button title="Create" onPress={createAccount} />
       </View>
     </View>
   );
