@@ -7,6 +7,9 @@ import _ from "lodash";
 
 import ModalOverlay from "./ModalOverlay";
 
+import { FIREBASE_AUTH } from "./firebaseConfig.js";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { image } from "./ImagePicker";
 /**
  *  Temp list containing the ID, location coordinates, and
  *  username of a user
@@ -130,6 +133,10 @@ export default function HomeScreen() {
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   };
+  // const firstName = "";
+  // const lastName = "";
+  // const email = "";
+
   return (
     <View style={styles.container}>
       <MapView
@@ -145,9 +152,13 @@ export default function HomeScreen() {
             source={require("./images/marker.png")}
             style={{ height: 35, width: 35 }}
           />
+          {/* {image && (
+            <Image source={{ uri: image }} style={{ width: 35, height: 35 }} />
+          )} */}
         </Marker>
       </MapView>
       <View>{ModalOverlay()}</View>
+      <View></View>
     </View>
   );
 }
