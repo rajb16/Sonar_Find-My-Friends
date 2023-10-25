@@ -9,7 +9,6 @@ import SignInScreen from "./SignInScreen";
 const Stack = createNativeStackNavigator();
 
 export default App = () => {
-  const isSignedIn = getIsSignedIn();
   return (
     <NavigationContainer>
       {/* screenOptions={{ headerShown: false }} */}
