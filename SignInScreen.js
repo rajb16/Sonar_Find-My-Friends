@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FIREBASE_AUTH } from './firebaseConfig';
-import { signInWithEmailAndPassword } from '@firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@firebase/auth';
+import { Alert } from 'react-native';
+
 
 export default function SignInScreen() {
   
@@ -17,6 +19,18 @@ export default function SignInScreen() {
       navigation.navigate('Home');
 
     } catch (error) {
+      Alert.alert(
+        'Invalid email',
+        'Please check your email and try again.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              setEmail('');
+            }, 
+          },
+        ]
+      );
       console.error(error.message);
     }
   };
@@ -29,6 +43,19 @@ export default function SignInScreen() {
 
     } catch (error) {
       console.error(error.message);
+      Alert.alert(
+        'Incorrect username or password',
+        'Please check your email and password and try again.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              setEmail('');
+              setPassword('');
+            }, 
+          },
+        ]
+      );
     }
   };
 
