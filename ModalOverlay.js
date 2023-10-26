@@ -15,28 +15,25 @@ import PickImage from "./ImagePicker.js";
 
 export default function ModalOverlay() {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [plusVisible, setPlusVisible] = useState(true);
+  const onPlusPress = () => {
+    setModalVisible(true);
+    setPlusVisible(false);
+  };
   return (
     <Callout style={styles.buttonCallout}>
       <View>
         <TouchableOpacity
           onPress={() => {
-            setModalVisible(true);
+            onPlusPress();
           }}
-          style={{
-            // backgroundColor: "orange",
-            backgroundColor: "#f0da37",
-            width: 55,
-            height: 55,
-            borderRadius: 100,
-            marginRight: 7,
-          }}
+          style={styles.touchable}
         >
           <View
             style={{
               alignItems: "center",
               justifyContent: "center",
-              marginBottom: 15,
+              // marginBottom: 15,
             }}
           >
             <Text
@@ -102,8 +99,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     position: "absolute",
-    bottom: 100,
-    right: 7,
+    bottom: "0%",
+    right: "5%",
+    marginBottom: "15%",
     alignSelf: "center",
     justifyContent: "space-between",
     // backgroundColor: "white",
@@ -119,8 +117,9 @@ const styles = StyleSheet.create({
     // backgroundColor: "rgba( 50, 65, 96, 0.8)",
     backgroundColor: "#02c47d",
     // borderWidth: 2,
-    marginLeft: "85%",
-    marginTop: "126%",
+    marginLeft: "84%",
+
+    marginTop: "127%",
     borderRadius: 30,
     shadowColor: "#000",
     shadowOffset: {
@@ -142,5 +141,14 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignSelf: "center",
     // marginBottom: "100%",
+  },
+  touchable: {
+    // backgroundColor: "orange",
+    backgroundColor: "#f0da37",
+    width: 55,
+    height: 55,
+    borderRadius: 100,
+    // marginRight: "5%",
+    // visibility: plusVisible ? "visible" : "hidden",
   },
 });
