@@ -12,7 +12,10 @@ import {
   initializeAuth,
   getReactNativePersistence,
 } from "@firebase/auth";
+<<<<<<< HEAD
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+=======
+>>>>>>> a634b0f11118aca872f309d4f975da1220351477
 
 export default function SignInScreen() {
   const navigation = useNavigation();
@@ -41,6 +44,18 @@ export default function SignInScreen() {
       console.log("User registered successfully");
       navigation.navigate("Home");
     } catch (error) {
+      Alert.alert(
+        'Invalid email',
+        'Please check your email and try again.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              setEmail('');
+            }, 
+          },
+        ]
+      );
       console.error(error.message);
     }
   };
@@ -52,6 +67,19 @@ export default function SignInScreen() {
       navigation.navigate("Home");
     } catch (error) {
       console.error(error.message);
+      Alert.alert(
+        'Incorrect username or password',
+        'Please check your email and password and try again.',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              setEmail('');
+              setPassword('');
+            }, 
+          },
+        ]
+      );
     }
   };
 
