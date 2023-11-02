@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { FIREBASE_AUTH, FIREBASE_APP } from "./firebaseConfig.js";
+import {
+  FIREBASE_AUTH,
+  FIREBASE_APP,
+  FIREBASE_PERSISTENT,
+} from "./firebaseConfig.js";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  initializeAuth,
+  getReactNativePersistence,
 } from "@firebase/auth";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function SignInScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
@@ -13,26 +21,22 @@ export default function SignInScreen() {
 
   const createAccount = async () => {
     try {
-      await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password).then(
-        (response) => {
-          const uid = response.user.uid;
-          const data = {
-            id: uid,
-            email,
-            fullName,
-          };
-          const usersRef = firebase.firestore().collection("users");
-          usersRef
-            .doc(uid)
-            .set(data)
-            .then(() => {
-              navigation.navigate("Home", { user: data });
-            })
-            .catch((error) => {
-              alert(error);
-            });
-        }
-      );
+      await createUserWithEmailAndPassword(
+        FIREBASE_PERSISTENT,
+        email,
+        password
+      ).then((response) => {
+        const usersRef = firebase.firestore().collection("users");
+        usersRef
+          .doc(uid)
+          .set(data)
+          .then(() => {
+            navigation.navigate("Home", { user: data });
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      });
 
       console.log("User registered successfully");
       navigation.navigate("Home");
@@ -43,7 +47,7 @@ export default function SignInScreen() {
 
   const signIn = async () => {
     try {
-      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      await signInWithEmailAndPassword(FIREBASE_PERSISTENT, email, password);
       console.log("User registered successfully");
       navigation.navigate("Home");
     } catch (error) {
