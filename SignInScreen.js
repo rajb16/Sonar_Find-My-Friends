@@ -12,6 +12,7 @@ import {
   initializeAuth,
   getReactNativePersistence,
 } from "@firebase/auth";
+import {Alert} from 'react-native';
 
 export default function SignInScreen() {
   const navigation = useNavigation();
