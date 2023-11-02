@@ -93,7 +93,6 @@ export default function HomeScreen() {
         </Marker>
       </MapView>
       <View>{ModalOverlay()}</View>
-      <View></View>
     </View>
   );
 }

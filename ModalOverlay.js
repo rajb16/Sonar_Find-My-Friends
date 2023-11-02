@@ -20,6 +20,8 @@ export default function ModalOverlay() {
     setModalVisible(true);
     setPlusVisible(false);
   };
+  const isInvalid = plusVisible;
+  const display = isInvalid ? "flex" : "none";
   return (
     <Callout style={styles.buttonCallout}>
       <View>
@@ -27,7 +29,7 @@ export default function ModalOverlay() {
           onPress={() => {
             onPlusPress();
           }}
-          style={styles.touchable}
+          style={[styles.touchable, { display }]}
         >
           <View
             style={{
@@ -44,46 +46,48 @@ export default function ModalOverlay() {
               +
             </Text>
           </View>
-
-          <View>
-            <Modal
-              // animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                // Alert.alert("Modal has been closed.");
-                setModalVisible(!modalVisible);
-              }}
-              onBackdropPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <View style={styles.modalPlus}>
-                <View style={{ marginTop: "100%" }}>{PickImage()}</View>
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalVisible(false);
+        </TouchableOpacity>
+        <View>
+          <Modal
+            // animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              // Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+              setPlusVisible(!plusVisible);
+            }}
+            onBackdropPress={() => {
+              setModalVisible(!modalVisible);
+              setPlusVisible(!plusVisible);
+            }}
+          >
+            <View style={styles.modalPlus}>
+              <View style={{ marginTop: "100%" }}>{PickImage()}</View>
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(false);
+                  setPlusVisible(!plusVisible);
+                }}
+                style={styles.modalX}
+              >
+                <View
+                  style={{
+                    alignItems: "center",
                   }}
-                  style={styles.modalX}
                 >
-                  <View
+                  <Text
                     style={{
-                      alignItems: "center",
+                      fontSize: 36,
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: 36,
-                      }}
-                    >
-                      x
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </Modal>
-          </View>
-        </TouchableOpacity>
+                    x
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </View>
 
         {/* </Entypo.Button> */}
       </View>
