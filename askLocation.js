@@ -24,7 +24,9 @@ export default function askLocation() {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Lowest,
+      });
       if (
         location.coords.latitude !== null &&
         location.coords.longitude !== null

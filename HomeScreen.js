@@ -5,6 +5,7 @@ import { View, StyleSheet, Image, Text, Button, Modal } from "react-native";
 import React, { useState, useEffect, Component } from "react";
 import _ from "lodash";
 import askLocation, { myMarker } from "./askLocation";
+import { markers } from "./App";
 import ModalOverlay from "./ModalOverlay";
 
 import { FIREBASE_AUTH } from "./firebaseConfig.js";
@@ -15,7 +16,7 @@ import { image } from "./ImagePicker";
  *  Temp list containing the ID, location coordinates, and
  *  username of a user
  */
-markerList = [
+const markerList = [
   {
     id: 1,
     username: "Francis",

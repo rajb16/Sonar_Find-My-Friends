@@ -12,8 +12,8 @@ import {
   initializeAuth,
   getReactNativePersistence,
 } from "@firebase/auth";
-import {Alert} from 'react-native';
-
+import { Alert } from "react-native";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 export default function SignInScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
