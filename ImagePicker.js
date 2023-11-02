@@ -32,7 +32,7 @@ export default function PickImage() {
       (snapshot) => {
         snapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
-            console.log("New file", change.doc.data());
+            // console.log("New file", change.doc.data());
             setFiles((prevFiles) => [...prevFiles, change.doc.data()]);
           }
         });
@@ -114,40 +114,6 @@ export default function PickImage() {
     }
   }
 
-  // const [reference, setReference] = useState(null);
-
-  // const [uploading, setUploading] = useState(false);
-  // const pickImage = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     //   aspect: [16, 9],
-  //     quality: 1,
-  //   });
-
-  //   if (!result.canceled) {
-  //     setImage(result.assets[0].uri);
-  //     // setReference(storage().ref(`${result} `));
-  //     // console.log(result);
-  //   }
-  // };
-  // const uploadImage = async () => {
-  //   setUploading(true);
-  //   const response = await fetch(image.uri);
-  //   const blob = await response.blob();
-  //   const filename = image.uri.substring(image.uri.lastIndexOf("/") + 1);
-  //   var ref = firebase.storage().ref().child(filename).put(blob);
-  //   try {
-  //     await ref;
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   setUploading(false);
-  //   Alert.alert("Photo uploaded!");
-  //   setImage(null);
-  // };
-
   return (
     <Callout>
       <View style={styles.buttonCallout}>
@@ -171,12 +137,6 @@ export default function PickImage() {
                     style={{ width: 300, height: 300 }}
                   />
                 )}
-                {/* <TouchableOpacity
-                  style={styles.uploadButton}
-                  onPress={uploadImage}
-                >
-                  <Text style={styles.btnText}>Upload Image</Text>
-                </TouchableOpacity> */}
               </View>
             </View>
           </View>
