@@ -14,7 +14,7 @@ export default App = () => {
       {/* screenOptions={{ headerShown: false }} */}
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <>
-          {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
+          <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
         </>
       </Stack.Navigator>

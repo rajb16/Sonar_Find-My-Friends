@@ -43,7 +43,7 @@ export default function askLocation() {
     }
   };
   useEffect(() => {
-    const MINUTE_MS = 2000;
+    const MINUTE_MS = 1000;
     const interval = setInterval(() => {
       getPermissions();
     }, MINUTE_MS);
