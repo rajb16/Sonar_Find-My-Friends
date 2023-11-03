@@ -55,6 +55,7 @@ export default function SignInScreen() {
 
   const signIn = async () => {
     try {
+      // await setPersistence(FIREBASE_PERSISTENT);
       await signInWithEmailAndPassword(FIREBASE_PERSISTENT, email, password);
       console.log("User registered successfully");
       navigation.navigate("Home");

@@ -7,11 +7,8 @@ import HomeScreen from "./HomeScreen";
 import SignInScreen from "./SignInScreen";
 // import askLocation, { myMarker } from "./askLocation";
 const Stack = createNativeStackNavigator();
-import askLocation, { myMarker } from "./askLocation";
+
 export default App = () => {
-  {
-    askLocation();
-  }
   return (
     <NavigationContainer>
       {/* screenOptions={{ headerShown: false }} */}

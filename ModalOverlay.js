@@ -20,8 +20,8 @@ export default function ModalOverlay() {
     setModalVisible(true);
     setPlusVisible(false);
   };
-  const isInvalid = plusVisible;
-  const display = isInvalid ? "flex" : "none";
+
+  const display = plusVisible ? "flex" : "none";
   return (
     <Callout style={styles.buttonCallout}>
       <View>
