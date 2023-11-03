@@ -78,7 +78,7 @@ export default function ModalOverlay() {
                 >
                   <Text
                     style={{
-                      fontSize: 36,
+                      fontSize: 35,
                     }}
                   >
                     x

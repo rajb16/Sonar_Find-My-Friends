@@ -1,42 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  FIREBASE_AUTH,
-  FIREBASE_APP,
-  FIREBASE_PERSISTENT,
-} from "./firebaseConfig.js";
+
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   initializeAuth,
   getReactNativePersistence,
+  getAuth,
+  setPersistence,
+  browserSessionPersistence,
+  Persistence,
+  onAuthStateChanged,
 } from "@firebase/auth";
 import { Alert } from "react-native";
+import { FIREBASE_APP } from "./firebaseConfig.js";
+
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import { firebase } from "@react-native-firebase/auth";
 export default function SignInScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const auth = getAuth(FIREBASE_APP);
+  useEffect(() => {
+    let subscriber = onAuthStateChanged(auth, (user) => {
+      console.log(auth.currentUser); //returns null now
+      if (user) {
+        navigation.navigate("Home");
+      }
+    });
 
+    return subscriber;
+  }, []);
   const createAccount = async () => {
     try {
-      await createUserWithEmailAndPassword(
-        FIREBASE_PERSISTENT,
-        email,
-        password
-      ).then((response) => {
-        const usersRef = firebase.firestore().collection("users");
-        usersRef
-          .doc(uid)
-          .set(data)
-          .then(() => {
-            navigation.navigate("Home", { user: data });
-          })
-          .catch((error) => {
-            alert(error);
-          });
-      });
+      await createUserWithEmailAndPassword(auth, email, password).then(
+        (response) => {
+          const usersRef = firebase.firestore().collection("users");
+          usersRef
+            .doc(uid)
+            .set(data)
+            .then(() => {
+              navigation.navigate("Home", { user: data });
+            })
+            .catch((error) => {
+              alert(error);
+            });
+        }
+      );
 
       console.log("User registered successfully");
       navigation.navigate("Home");
@@ -55,8 +67,7 @@ export default function SignInScreen() {
 
   const signIn = async () => {
     try {
-      // await setPersistence(FIREBASE_PERSISTENT);
-      await signInWithEmailAndPassword(FIREBASE_PERSISTENT, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       console.log("User registered successfully");
       navigation.navigate("Home");
     } catch (error) {
@@ -86,7 +97,7 @@ export default function SignInScreen() {
         onChangeText={setEmail}
         placeholder="E-mail"
         keyboardType="email-address"
-        autoCompleteType="off"
+        // autoCompleteType="off"
       />
       <TextInput
         style={styles.input}
