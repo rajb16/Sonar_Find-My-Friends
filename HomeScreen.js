@@ -11,7 +11,7 @@ import ModalOverlay from "./ModalOverlay";
 import { FIREBASE_AUTH } from "./firebaseConfig.js";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { image } from "./ImagePicker";
-
+// import askLocation, { myMarker } from "./askLocation";
 /**
  *  Temp list containing the ID, location coordinates, and
  *  username of a user
@@ -72,6 +72,9 @@ const renderMarkers = () => {
   return renderedMarkers;
 };
 export default function HomeScreen() {
+  {
+    askLocation();
+  }
   return (
     <View style={styles.container}>
       <MapView
@@ -93,6 +96,7 @@ export default function HomeScreen() {
         </Marker>
       </MapView>
       <View>{ModalOverlay()}</View>
+      <View></View>
     </View>
   );
 }
