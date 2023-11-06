@@ -1,16 +1,29 @@
-import * as Location from "expo-location";
 import mapStyle from "./mapStyle1.json";
-import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps";
-import { View, StyleSheet, Image, Text, Button, Modal } from "react-native";
-import React, { useState, useEffect, Component } from "react";
+import MapView, { Marker, Callout } from "react-native-maps";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Modal,
+  Text,
+} from "react-native";
+import React, { useState, useRef } from "react";
 import _ from "lodash";
 import askLocation, { myMarker } from "./askLocation";
-import { markers } from "./App";
 import ModalOverlay from "./ModalOverlay";
-
-import { FIREBASE_AUTH } from "./firebaseConfig.js";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { image } from "./ImagePicker";
+import {} from "react-native-maps";
+import { Video, ResizeMode } from "expo-av";
+/** Temp icons dictionary. it will be replaced by firebase */
+const localIcons = {
+  logo: require("./images/logo.png"),
+  markerImg: require("./images/marker.png"),
+  miata: require("./images/miata.jpg"),
+  sunset: require("./images/sunset.jpg"),
+  skyline: require("./images/r30.jpg"),
+  loading: require("./images/earth.gif"),
+  video: "./images/burnout.mp4",
+};
 // import askLocation, { myMarker } from "./askLocation";
 /**
  *  Temp list containing the ID, location coordinates, and
@@ -20,8 +33,9 @@ const markerList = [
   {
     id: 1,
     username: "Francis",
-    description:
-      "https://media.geeksforgeeks.org/wp-content/uploads/20230306120634/unnamed.jpg",
+    type: "image",
+    img: localIcons.miata,
+    video: "",
     coordinate: {
       latitude: 39.710579,
       longitude: -75.120261,
@@ -30,7 +44,8 @@ const markerList = [
   {
     id: 2,
     username: "Parth",
-    description: " sdf",
+    type: "video",
+    video: localIcons.video,
     coordinate: {
       latitude: 39.712906,
       longitude: -75.1219,
@@ -39,7 +54,9 @@ const markerList = [
   {
     id: 3,
     username: "Chris",
-    description: "sdf",
+    type: "image",
+    video: "",
+    img: localIcons.skyline,
     coordinate: {
       latitude: 39.718964,
       longitude: -75.113555,
@@ -48,33 +65,168 @@ const markerList = [
   {
     id: 4,
     username: "Oscar",
-    description: "sdf ",
+    type: "image",
+    video: "",
+    img: localIcons.sunset,
     coordinate: {
       latitude: 39.717518,
       longitude: -75.112928,
     },
   },
 ];
+
 const renderMarkers = () => {
   const renderedMarkers = _.map(markerList, (marker) => {
-    const { username, description, coordinate, id } = marker;
+    const { username, type, img, video, coordinate, id } = marker;
+    const [image, setImage] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
+    const displyMedia = () => {
+      if (type === "image") {
+        return (
+          <Image
+            source={img}
+            style={{
+              flex: 0,
+              width: "100%",
+              height: "100%",
+              resizeMode: "contain",
+            }}
+          />
+        );
+      } else if (type === "video") {
+        const videoRef = useRef(null);
+        return (
+          <View style={styles.vidcontainer}>
+            <Video
+              source={require("./images/burnout.mp4")} // the video file
+              resizeMode={ResizeMode.CONTAIN}
+              style={styles.video}
+              isLooping
+              useNativeControls={true}
+              shouldPlay
+              // onReadyForDisplay={}
+            />
+          </View>
+        );
+      }
+    };
+    const displayMediaHomeScreen = () => {
+      if (type === "image") {
+        return (
+          <Image
+            source={img}
+            style={{ height: 30, width: 30, borderRadius: 30 }}
+          />
+        );
+      } else if (type === "video") {
+        const player = useRef(null);
+        <View style={styles.vidcontainer}>
+          <Video
+            source={require("./images/burnout.mp4")}
+            ref={player}
+            paused={true}
+            style={{ height: 30, width: 30, borderRadius: 30 }}
+            onLoad={() => {
+              player.current.seek(0); // this will set first frame of video as thumbnail
+            }}
+          />
+          ;
+        </View>;
+      }
+    };
     return (
       <Marker
         key={id}
-        title={username}
-        description={description}
+        // title={username}
         coordinate={coordinate}
-      />
+        onPress={() => {
+          setModalVisible(!modalVisible);
+          console.log("modalVisible");
+        }}
+      >
+        <View style={styles.touchable}>
+          <Callout>
+            {displayMediaHomeScreen()}
+            <Modal
+              visible={modalVisible}
+              animationType="fade"
+              statusBarTranslucent={true}
+              transparent={true}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              // transparent={true}
+            >
+              <View style={{ backgroundColor: "rgba(0,0,0, 0.9)" }}>
+                <TouchableOpacity
+                  style={styles.backModal}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View>
+                    <Text style={styles.touchableText}>ᐊ</Text>
+                  </View>
+                </TouchableOpacity>
+                <Text style={styles.userText}>{username}</Text>
+                <View
+                  style={{
+                    flex: 0,
+                    marginBottom: "130%",
+                  }}
+                >
+                  {displyMedia()}
+                </View>
+              </View>
+            </Modal>
+          </Callout>
+        </View>
+        <Text>{username}</Text>
+      </Marker>
+
+      // </Callout>
     );
   });
 
   return renderedMarkers;
 };
+
 export default function HomeScreen() {
   {
     askLocation();
   }
+
+  const changeIcon = () => {
+    let img;
+    let val = false;
+    myMarker.latitude > 0 ? (val = true) : (val = false);
+    val ? (img = localIcons.markerImg) : (img = localIcons.loading);
+
+    return img;
+  };
+  const changeIconHeight = () => {
+    let val = false;
+    let height;
+    myMarker.latitude > 0 ? (val = true) : (val = false);
+    val ? (height = 35) : (height = 135);
+
+    return height;
+  };
+  const changeIconWidth = () => {
+    let val = false;
+    let width;
+    myMarker.latitude > 0 ? (val = true) : (val = false);
+    val ? (width = 35) : (width = 135);
+
+    return width;
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const onPlusPress = () => {
+    setModalVisible(!modalVisible);
+    console.log("modalVisible");
+  };
   return (
     <View style={styles.container}>
       <MapView
@@ -84,10 +236,18 @@ export default function HomeScreen() {
         showsUserLocation={false}
         showsCompass={false}
       >
+        {/* <TouchableOpacity>{renderMarkers()}</TouchableOpacity> */}
+        {/* <View> */}
         {renderMarkers()}
+        {/* </View> */}
         <Marker coordinate={myMarker}>
           <Image
-            source={require("./images/marker.png")}
+            // source={require("./images/marker.png")}
+            source={changeIcon()}
+            // style={{
+            //   height: changeIconHeight(),
+            //   width: changeIconWidth(),
+            // }}
             style={{ height: 35, width: 35 }}
           />
           {/* {image && (
@@ -104,5 +264,59 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  touchable: {
+    // backgroundColor: "orange",
+    backgroundColor: "#74ca0b",
+    width: 36,
+    height: 36,
+    borderRadius: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+
+    // marginRight: "5%",
+    // visibility: plusVisible ? "visible" : "hidden",
+  },
+  backModal: {
+    // backgroundColor: "orange",
+    backgroundColor: "#f0da37",
+    width: 45,
+    height: 45,
+    borderRadius: 100,
+    marginLeft: "2%",
+    marginTop: "10%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    // marginRight: "5%",
+    // visibility: plusVisible ? "visible" : "hidden",
+  },
+  touchableText: {
+    alignSelf: "center",
+    fontSize: 24,
+    marginRight: "10%",
+  },
+  userText: {
+    alignSelf: "center",
+    fontSize: 40,
+    color: "white",
+  },
+  vidcontainer: {
+    // flex: 1,
+    justifyContent: "center",
+  },
+  video: {
+    alignSelf: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0, 1)",
+  },
+  videoHome: {
+    alignSelf: "center",
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    // backgroundColor: "rgba(0,0,0, 1)",
   },
 });

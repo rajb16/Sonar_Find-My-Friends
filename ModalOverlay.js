@@ -36,11 +36,12 @@ export default function ModalOverlay() {
               alignItems: "center",
               justifyContent: "center",
               // marginBottom: 15,
+              // marginBottom: "40%",
             }}
           >
             <Text
               style={{
-                fontSize: 40,
+                fontSize: 35,
               }}
             >
               +
@@ -52,6 +53,7 @@ export default function ModalOverlay() {
             // animationType="slide"
             transparent={true}
             visible={modalVisible}
+            animationType="fade"
             onRequestClose={() => {
               // Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
@@ -74,11 +76,12 @@ export default function ModalOverlay() {
                 <View
                   style={{
                     alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 35,
+                      fontSize: 30,
                     }}
                   >
                     x
@@ -144,6 +147,8 @@ const styles = StyleSheet.create({
     marginTop: "85%",
     // justifyContent: "center",
     alignSelf: "center",
+
+    borderWidth: 2,
     // marginBottom: "100%",
   },
   touchable: {
@@ -152,6 +157,7 @@ const styles = StyleSheet.create({
     width: 55,
     height: 55,
     borderRadius: 100,
+    borderWidth: 2,
     // marginRight: "5%",
     // visibility: plusVisible ? "visible" : "hidden",
   },
