@@ -1,0 +1,3 @@
+DO NOT DELETE
+
+icon 'Ellipsis / Spinner' from loading.io
