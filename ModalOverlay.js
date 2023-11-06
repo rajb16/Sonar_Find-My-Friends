@@ -149,7 +149,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
 
     borderWidth: 2,
-    // marginBottom: "100%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+    elevation: 15,
   },
   touchable: {
     // backgroundColor: "orange",
@@ -158,6 +165,14 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 100,
     borderWidth: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+    elevation: 15,
     // marginRight: "5%",
     // visibility: plusVisible ? "visible" : "hidden",
   },
