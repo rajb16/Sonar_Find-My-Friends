@@ -58,8 +58,8 @@ const markerList = [
     video: "",
     img: localIcons.skyline,
     coordinate: {
-      latitude: 39.718964,
-      longitude: -75.113555,
+      latitude: 39.720622,
+      longitude: -75.119014,
     },
   },
   {
@@ -99,7 +99,7 @@ const renderMarkers = () => {
         return (
           <View style={styles.vidcontainer}>
             <Video
-              source={require("./images/burnout.mp4")} // the video file
+              source={require("./images/lambo.mp4")} // the video file
               resizeMode={ResizeMode.CONTAIN}
               style={styles.video}
               isLooping
@@ -116,23 +116,36 @@ const renderMarkers = () => {
         return (
           <Image
             source={img}
-            style={{ height: 30, width: 30, borderRadius: 30 }}
+            style={{
+              height: 30,
+              width: 30,
+              borderRadius: 30,
+              borderColor: "rgba(0,0,0,1.0)",
+              borderWidth: 0.5,
+            }}
           />
         );
       } else if (type === "video") {
         const player = useRef(null);
-        <View style={styles.vidcontainer}>
-          <Video
-            source={require("./images/burnout.mp4")}
-            ref={player}
-            paused={true}
-            style={{ height: 30, width: 30, borderRadius: 30 }}
-            onLoad={() => {
-              player.current.seek(0); // this will set first frame of video as thumbnail
-            }}
-          />
-          ;
-        </View>;
+        return (
+          <View style={styles.vidcontainer}>
+            <Video
+              source={{ uri: "./images/lambo.mp4" }}
+              ref={player}
+              // paused={true}
+              style={{
+                height: 30,
+                width: 30,
+                borderRadius: 30,
+                borderColor: "rgba(0,0,0,1.0)",
+                borderWidth: 0.5,
+              }}
+              // onLoad={() => {
+              //   player.current.seek(1); // this will set first frame of video as thumbnail
+              // }}
+            />
+          </View>
+        );
       }
     };
     return (
@@ -145,45 +158,74 @@ const renderMarkers = () => {
           console.log("modalVisible");
         }}
       >
-        <View style={styles.touchable}>
-          <Callout>
-            {displayMediaHomeScreen()}
-            <Modal
-              visible={modalVisible}
-              animationType="fade"
-              statusBarTranslucent={true}
-              transparent={true}
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              // transparent={true}
-            >
-              <View style={{ backgroundColor: "rgba(0,0,0, 0.9)" }}>
-                <TouchableOpacity
-                  style={styles.backModal}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <View>
-                    <Text style={styles.touchableText}>ᐊ</Text>
+        <View>
+          <View style={styles.touchable}>
+            <Callout>
+              {displayMediaHomeScreen()}
+              <Modal
+                visible={modalVisible}
+                animationType="fade"
+                statusBarTranslucent={true}
+                transparent={true}
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                // transparent={true}
+              >
+                <View style={{ backgroundColor: "rgba(0,0,0, 0.9)" }}>
+                  <TouchableOpacity
+                    style={styles.backModal}
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <View>
+                      <Text style={styles.touchableText}>ᐊ</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <Text style={styles.userText}>{username}</Text>
+                  <View
+                    style={{
+                      flex: 0,
+                      marginBottom: "130%",
+                    }}
+                  >
+                    {displyMedia()}
                   </View>
-                </TouchableOpacity>
-                <Text style={styles.userText}>{username}</Text>
-                <View
-                  style={{
-                    flex: 0,
-                    marginBottom: "130%",
-                  }}
-                >
-                  {displyMedia()}
                 </View>
-              </View>
-            </Modal>
-          </Callout>
+              </Modal>
+            </Callout>
+          </View>
+          <View
+            style={{
+              alignSelf: "center",
+              alignContent: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                backgroundColor: "rgba(5,35,74,0.85)",
+                borderRadius: 5,
+                alignSelf: "center",
+                alignContent: "center",
+                // color: "white",
+                borderWidth: 1.2,
+                borderColor: "rgba(0,0,0,1)",
+                fontSize: 14,
+                color: "#FFFFFF",
+                paddingLeft: "1%",
+                paddingRight: ".5%",
+                textShadowColor: "#585858",
+                textShadowOffset: { width: 5, height: 5 },
+                textShadowRadius: 50,
+              }}
+            >
+              {username}
+            </Text>
+          </View>
         </View>
-        <Text>{username}</Text>
       </Marker>
 
       // </Callout>
@@ -230,7 +272,11 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <MapView
-        style={{ alignSelf: "stretch", height: "100%" }}
+        style={{
+          alignSelf: "stretch",
+          height: "100%",
+          // bottom: "-3.5%",
+        }}
         region={myMarker}
         customMapStyle={mapStyle}
         showsUserLocation={false}
@@ -256,7 +302,6 @@ export default function HomeScreen() {
         </Marker>
       </MapView>
       <View>{ModalOverlay()}</View>
-      <View></View>
     </View>
   );
 }
@@ -264,19 +309,17 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "rgba(32,32,32, 0.9)",
   },
   touchable: {
     // backgroundColor: "orange",
-    backgroundColor: "#74ca0b",
-    width: 36,
-    height: 36,
-    borderRadius: 35,
+    backgroundColor: "#04da12",
+    width: 38,
+    height: 38,
+    borderRadius: 56,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 1,
-
-    // marginRight: "5%",
-    // visibility: plusVisible ? "visible" : "hidden",
+    borderWidth: 1.3,
   },
   backModal: {
     // backgroundColor: "orange",
