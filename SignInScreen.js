@@ -1,90 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import {
+  FIREBASE_AUTH,
+  FIREBASE_APP,
+} from "./firebaseConfig.js";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   initializeAuth,
   getReactNativePersistence,
-  getAuth,
-  setPersistence,
-  browserSessionPersistence,
-  Persistence,
-  onAuthStateChanged,
 } from "@firebase/auth";
-import { Alert } from "react-native";
-import { FIREBASE_APP } from "./firebaseConfig.js";
-
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { firebase } from "@react-native-firebase/auth";
+
 export default function SignInScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = getAuth(FIREBASE_APP);
-  useEffect(() => {
-    let subscriber = onAuthStateChanged(auth, (user) => {
-      console.log(auth.currentUser); //returns null now
-      if (user) {
-        navigation.navigate("Home");
-      }
-    });
 
-    return subscriber;
-  }, []);
   const createAccount = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password).then(
-        (response) => {
-          const usersRef = firebase.firestore().collection("users");
-          usersRef
-            .doc(uid)
-            .set(data)
-            .then(() => {
-              navigation.navigate("Home", { user: data });
-            })
-            .catch((error) => {
-              alert(error);
-            });
-        }
-      );
+      await createUserWithEmailAndPassword(
+        FIREBASE_AUTH,
+        email,
+        password
+      ).then((response) => {
+        const usersRef = FIREBASE_APP.firestore().collection("users");
+        usersRef
+          .doc(uid)
+          .set(data)
+          .then(() => {
+            navigation.navigate("Home", { user: data });
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      });
 
       console.log("User registered successfully");
       navigation.navigate("Home");
     } catch (error) {
-      Alert.alert("Invalid email", "Please check your email and try again.", [
-        {
-          text: "OK",
-          onPress: () => {
-            setEmail("");
-          },
-        },
-      ]);
       console.error(error.message);
     }
   };
 
   const signIn = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
       console.log("User registered successfully");
       navigation.navigate("Home");
     } catch (error) {
       console.error(error.message);
-      Alert.alert(
-        "Incorrect username or password",
-        "Please check your email and password and try again.",
-        [
-          {
-            text: "OK",
-            onPress: () => {
-              setEmail("");
-              setPassword("");
-            },
-          },
-        ]
-      );
     }
   };
 
@@ -97,7 +63,7 @@ export default function SignInScreen() {
         onChangeText={setEmail}
         placeholder="E-mail"
         keyboardType="email-address"
-        // autoCompleteType="off"
+        autoCompleteType="off"
       />
       <TextInput
         style={styles.input}
