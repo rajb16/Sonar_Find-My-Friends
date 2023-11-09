@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  FIREBASE_AUTH,
-  FIREBASE_APP,
-} from "./firebaseConfig.js";
+import { FIREBASE_AUTH, FIREBASE_APP, FIREBASE_DB } from "./firebaseConfig.js";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  initializeAuth,
-  getReactNativePersistence,
 } from "@firebase/auth";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
 
 export default function SignInScreen() {
   const navigation = useNavigation();
@@ -20,27 +15,30 @@ export default function SignInScreen() {
 
   const createAccount = async () => {
     try {
-      await createUserWithEmailAndPassword(
+      const response = await createUserWithEmailAndPassword(
         FIREBASE_AUTH,
         email,
         password
-      ).then((response) => {
-        const usersRef = FIREBASE_APP.firestore().collection("users");
-        usersRef
-          .doc(uid)
-          .set(data)
-          .then(() => {
-            navigation.navigate("Home", { user: data });
-          })
-          .catch((error) => {
-            alert(error);
-          });
+      );
+
+      const user = response.user;
+
+      const emailParts = email.split("@");
+      const name = emailParts[0];
+
+      const usersRef = collection(FIREBASE_DB, "users");
+      const userDoc = doc(usersRef, user.uid);
+
+      await setDoc(userDoc, {
+        name,
+        email,
       });
 
       console.log("User registered successfully");
-      navigation.navigate("Home");
+      navigation.navigate("Home", { user });
     } catch (error) {
       console.error(error.message);
+      alert(error.message); // You might want to display the error to the user
     }
   };
 

@@ -17,7 +17,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
-import { FIREBASE_DB, storage } from "./firebaseConfig.js";
+import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
 import { Video } from "expo-av";
 import { UploadingAndroid } from "./components/UploadingAndroid.js";
 
@@ -103,14 +103,19 @@ export default function PickImage() {
 
   async function saveRecord(fileType, url, createdAt) {
     try {
-      const docRef = await addDoc(collection(FIREBASE_DB, "files"), {
+      const filesCollection = collection(FIREBASE_DB, "files");
+      const userID = FIREBASE_AUTH.currentUser.uid;
+      const userFilesCollection = collection(filesCollection, userID, "userFiles");
+  
+      const docRef = await addDoc(userFilesCollection, {
         fileType,
         url,
         createdAt,
       });
-      console.log("document saved correctly: ", docRef.id);
+  
+      console.log("Document saved correctly: ", docRef.id);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
