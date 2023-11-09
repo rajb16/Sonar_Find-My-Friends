@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   FIREBASE_AUTH,
   FIREBASE_APP,
+  FIREBASE_DB,
 } from "./firebaseConfig.js";
 import {
   signInWithEmailAndPassword,

@@ -14,6 +14,7 @@ import askLocation, { myMarker } from "./askLocation";
 import ModalOverlay from "./ModalOverlay";
 import {} from "react-native-maps";
 import { Video, ResizeMode } from "expo-av";
+import { sendFriendRequest, acceptFriendRequest } from "./friendFunctions";
 /** Temp icons dictionary. it will be replaced by firebase */
 const localIcons = {
   logo: require("./images/logo.png"),
@@ -238,6 +239,9 @@ const renderMarkers = () => {
 export default function HomeScreen() {
   {
     askLocation();
+    //const sender = "BxDdHicedPSm9fQaenbl1smae0O2";
+    //const recip = "5Wp3IxFx1FefEDBubjfS7W0xEzR2";
+    //sendFriendRequest(sender, recip);
   }
 
   const changeIcon = () => {
