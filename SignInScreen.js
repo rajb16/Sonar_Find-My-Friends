@@ -29,8 +29,7 @@ export default function SignInScreen() {
       const emailParts = email.split('@');
       const name = emailParts[0];
   
-      const firestore = getFirestore(FIREBASE_APP);
-      const usersRef = collection(firestore, "users");
+      const usersRef = collection(FIREBASE_DB, "users");
       const userDoc = doc(usersRef, user.uid);
   
       await setDoc(userDoc, {
