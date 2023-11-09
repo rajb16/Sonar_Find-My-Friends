@@ -35,8 +35,6 @@ export default function ModalOverlay() {
             style={{
               alignItems: "center",
               justifyContent: "center",
-              // marginBottom: 15,
-              // marginBottom: "40%",
             }}
           >
             <Text
@@ -111,9 +109,6 @@ const styles = StyleSheet.create({
     marginBottom: "15%",
     alignSelf: "center",
     justifyContent: "space-between",
-    // backgroundColor: "white",
-    // borderWidth: 0.5,
-    // borderRadius: 10,
   },
   touchableText: {
     fontSize: 24,
@@ -156,7 +151,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 8,
-    elevation: 15,
+    elevation: 5,
   },
   touchable: {
     // backgroundColor: "orange",
@@ -172,8 +167,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 8,
-    elevation: 15,
-    // marginRight: "5%",
-    // visibility: plusVisible ? "visible" : "hidden",
+    elevation: 5,
   },
 });
