@@ -20,6 +20,7 @@ import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
 import { Video } from "expo-av";
 import { UploadingAndroid } from "./components/UploadingAndroid.js";
+import { myMarker } from "./askLocation.js";
 
 export default function PickImage() {
   const [image, setImage] = useState("");
@@ -93,7 +94,7 @@ export default function PickImage() {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           console.log("File available at: ", downloadURL);
           // save record
-          await saveRecord(fileType, downloadURL, new Date().toISOString());
+          await saveRecord(fileType, downloadURL, new Date().toISOString(), myMarker.latitude, myMarker.longitude);
           setImage("");
           setVideo("");
         });
@@ -101,7 +102,7 @@ export default function PickImage() {
     );
   }
 
-  async function saveRecord(fileType, url, createdAt) {
+  async function saveRecord(fileType, url, createdAt, lat, long) {
     try {
       const filesCollection = collection(FIREBASE_DB, "files");
       const userID = FIREBASE_AUTH.currentUser.uid;
@@ -111,6 +112,8 @@ export default function PickImage() {
         fileType,
         url,
         createdAt,
+        lat,
+        long
       });
   
       console.log("Document saved correctly: ", docRef.id);
