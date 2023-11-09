@@ -133,7 +133,7 @@ const renderMarkers = () => {
             <Video
               source={{ uri: "./images/lambo.mp4" }}
               ref={player}
-              // paused={true}
+              paused={true}
               style={{
                 height: 30,
                 width: 30,
@@ -141,9 +141,9 @@ const renderMarkers = () => {
                 borderColor: "rgba(0,0,0,1.0)",
                 borderWidth: 0.5,
               }}
-              // onLoad={() => {
-              //   player.current.seek(1); // this will set first frame of video as thumbnail
-              // }}
+              onLoad={() => {
+                player.current.seek(1); // this will set first frame of video as thumbnail
+              }}
             />
           </View>
         );
