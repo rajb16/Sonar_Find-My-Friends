@@ -158,7 +158,7 @@ const renderMarkers = () => {
           console.log("modalVisible");
         }}
       >
-        <View>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
           <View style={styles.touchable}>
             <Callout>
               {displayMediaHomeScreen()}
@@ -216,7 +216,7 @@ const renderMarkers = () => {
                 fontSize: 14,
                 color: "#FFFFFF",
                 paddingLeft: "1%",
-                paddingRight: ".5%",
+                // paddingRight: ".5%",
                 textShadowColor: "#585858",
                 textShadowOffset: { width: 5, height: 5 },
                 textShadowRadius: 50,
