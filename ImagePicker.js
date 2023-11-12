@@ -113,7 +113,7 @@ export default function PickImage() {
         url,
         createdAt,
         lat,
-        long
+        long,
       });
   
       console.log("Document saved correctly: ", docRef.id);
