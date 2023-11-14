@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH, FIREBASE_APP, FIREBASE_DB } from "./firebaseConfig.js";
@@ -44,9 +44,19 @@ export default function SignInScreen() {
 
   const signIn = async () => {
     try {
-      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
-      console.log("User registered successfully");
-      navigation.navigate("Home");
+      const response = await signInWithEmailAndPassword(
+        FIREBASE_AUTH,
+        email,
+        password
+      );
+
+      if (response && response.user) {
+        const user = response.user;
+        console.log("User signed in successfully");
+        navigation.navigate("Friends", { user });
+      } else {
+        console.error("Failed to sign in. Response or user is undefined.");
+      }
     } catch (error) {
       console.error(error.message);
     }

@@ -241,7 +241,7 @@ export default function HomeScreen() {
     askLocation();
     //const sender = "BxDdHicedPSm9fQaenbl1smae0O2";
     //const recip = "5Wp3IxFx1FefEDBubjfS7W0xEzR2";
-    //sendFriendRequest(sender, recip);
+    //acceptFriendRequest(sender, recip);
   }
 
   const changeIcon = () => {
