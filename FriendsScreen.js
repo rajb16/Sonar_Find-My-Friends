@@ -4,9 +4,11 @@ import { getPendingRequests, getFriends, acceptFriendRequest, declineFriendReque
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const FriendsScreen = ({ route }) => {
-  const [currentUser, setCurrentUser] = useState(route.params.user);
+  const [currentUser, setCurrentUser] = useState(JSON.parse(route.params.user));
   const [pendingRequests, setPendingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
 
   useEffect(() => {
     loadFriendsData();
@@ -18,6 +20,7 @@ const FriendsScreen = ({ route }) => {
 
     setPendingRequests(pendingRequestsData);
     setFriends(friendsData);
+    setDataLoaded(true);
   };
 
   const handleAcceptRequest = async (senderId) => {
@@ -56,11 +59,15 @@ const FriendsScreen = ({ route }) => {
   return (
     <SafeAreaView>
       <View>
+        {dataLoaded && !pendingRequests.length && !friends.length && (
+          <Text>No friends or requests</Text>
+        )}
+
         {!!pendingRequests.length && (
           <>
             <Text>Pending Requests:</Text>
             <FlatList
-              data={pendingRequests.map(request => ({ ...request, isPending: true }))}
+              data={pendingRequests.map((request) => ({ ...request, isPending: true }))}
               renderItem={renderItem}
               keyExtractor={(item) => item.email}
             />
@@ -71,7 +78,7 @@ const FriendsScreen = ({ route }) => {
           <>
             <Text>Friends:</Text>
             <FlatList
-              data={friends.map(friend => ({ ...friend, isFriend: true }))}
+              data={friends.map((friend) => ({ ...friend, isFriend: true }))}
               renderItem={renderItem}
               keyExtractor={(item) => item.email}
             />
@@ -80,6 +87,7 @@ const FriendsScreen = ({ route }) => {
       </View>
     </SafeAreaView>
   );
+
 };
 
 export default FriendsScreen;
