@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { getPendingRequests, getFriends, acceptFriendRequest, declineFriendRequest, removeFriend } from './friendFunctions';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SearchBar } from 'react-native-screens';
+import { useNavigation } from "@react-navigation/native";
 
 const FriendsScreen = ({ route }) => {
+  const navigation = useNavigation();
   const [currentUser, setCurrentUser] = useState(JSON.parse(route.params.user));
   const [pendingRequests, setPendingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -39,6 +42,7 @@ const FriendsScreen = ({ route }) => {
 
   const renderItem = ({ item }) => (
     <SafeAreaView>
+      <SearchBar />
       <View style={styles.listItem}>
         <Text style={styles.name}>{item.name}</Text>
         {item.isFriend && (
@@ -88,6 +92,9 @@ const FriendsScreen = ({ route }) => {
             />
           </>
         )}
+        <TouchableOpacity style={styles.searchButton} onPress={() => navigation.navigate('Search')}>
+          <Text style={styles.searchButtonText}>Search Friend</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -143,6 +150,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   removeButtonText: {
+    color: 'white',
+  },
+
+  searchButton: {
+    position: 'absolute',
+    bottom: "0%",
+    right: "5%",
+    backgroundColor: '#3498db',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchButtonText: {
     color: 'white',
   },
 });
