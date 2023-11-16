@@ -56,7 +56,7 @@ export const getFriends = async (userId) => {
 
 export const searchUsers = async (name) => {
   const usersRef = collection(FIREBASE_DB, 'users');
-  const q = query(usersRef, where('displayName', '>=', name));
+  const q = query(usersRef, where('name', '>=', name));
 
   const querySnapshot = await getDocs(q);
 
@@ -98,3 +98,6 @@ export const getPendingRequests = async (userId) => {
 
   return [];
 };
+
+
+

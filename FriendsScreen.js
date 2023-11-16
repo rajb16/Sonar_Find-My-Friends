@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button } from 'react-native';
+import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { getPendingRequests, getFriends, acceptFriendRequest, declineFriendRequest, removeFriend } from './friendFunctions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -8,7 +8,6 @@ const FriendsScreen = ({ route }) => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
-
 
   useEffect(() => {
     loadFriendsData();
@@ -33,7 +32,6 @@ const FriendsScreen = ({ route }) => {
     loadFriendsData();
   };
 
-  
   const handleRemoveFriend = async (friendId) => {
     await removeFriend(currentUser.uid, friendId);
     loadFriendsData();
@@ -41,15 +39,21 @@ const FriendsScreen = ({ route }) => {
 
   const renderItem = ({ item }) => (
     <SafeAreaView>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 }}>
-        <Text>{item.name}</Text>
+      <View style={styles.listItem}>
+        <Text style={styles.name}>{item.name}</Text>
         {item.isFriend && (
-          <Button title="Remove Friend" onPress={() => handleRemoveFriend(item.userId)} />
+          <TouchableOpacity style={styles.removeButton} onPress={() => handleRemoveFriend(item.userId)}>
+            <Text style={styles.removeButtonText}>Remove Friend</Text>
+          </TouchableOpacity>
         )}
         {item.isPending && (
           <>
-            <Button title="Accept" onPress={() => handleAcceptRequest(item.userId)} />
-            <Button title="Decline" onPress={() => handleDeclineRequest(item.userId)} />
+            <TouchableOpacity style={styles.acceptButton} onPress={() => handleAcceptRequest(item.userId)}>
+              <Text style={styles.acceptButtonText}>Accept</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.declineButton} onPress={() => handleDeclineRequest(item.userId)}>
+              <Text style={styles.declineButtonText}>Decline</Text>
+            </TouchableOpacity>
           </>
         )}
       </View>
@@ -57,7 +61,7 @@ const FriendsScreen = ({ route }) => {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <View>
         {dataLoaded && !pendingRequests.length && !friends.length && (
           <Text>No friends or requests</Text>
@@ -87,7 +91,60 @@ const FriendsScreen = ({ route }) => {
       </View>
     </SafeAreaView>
   );
-
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#f0f0f0',
+  },
+  listItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+    paddingHorizontal: 16,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    elevation: 2,
+  },
+  name: {
+    flex: 1,
+    marginRight: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  acceptButton: {
+    backgroundColor: '#6d69c3',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  acceptButtonText: {
+    color: 'white',
+  },
+  declineButton: {
+    backgroundColor: '#e74c3c',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  declineButtonText: {
+    color: 'white',
+  },
+  removeButton: {
+    backgroundColor: '#e74c3c',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  removeButtonText: {
+    color: 'white',
+  },
+});
 
 export default FriendsScreen;
