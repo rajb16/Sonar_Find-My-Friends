@@ -2,11 +2,16 @@ import { collection, query, where, getDocs, updateDoc, arrayUnion, arrayRemove, 
 import { FIREBASE_DB } from "./firebaseConfig"; 
 
 export async function sendFriendRequest(senderId, recipientId) {
+  if (!recipientId) {
+    console.error('Recipient ID is undefined. Cannot send friend request.');
+    return;
+  }
 
-    await updateDoc(doc(FIREBASE_DB, "users", senderId), {
-      pendingRequests: arrayUnion(recipientId),
-    });
-  
+  await updateDoc(doc(FIREBASE_DB, "users", senderId), {
+    pendingRequests: arrayUnion(recipientId),
+  });
+
+  console.log('Friend request sent successfully!');
 }
 
 export async function acceptFriendRequest(recipientId, senderId) {
@@ -62,7 +67,12 @@ export const searchUsers = async (name) => {
 
   const results = [];
   querySnapshot.forEach((doc) => {
-    results.push(doc.data());
+    const userData = doc.data();
+    const userId = doc.id;
+
+    // Include the userId property in each result
+    const result = { ...userData, userId };
+    results.push(result);
   });
 
   return results;

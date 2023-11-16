@@ -92,7 +92,7 @@ const FriendsScreen = ({ route }) => {
             />
           </>
         )}
-        <TouchableOpacity style={styles.searchButton} onPress={() => navigation.navigate('Search')}>
+        <TouchableOpacity style={styles.searchButton} onPress={() => navigation.navigate('Search', ({currentUser}))}>
           <Text style={styles.searchButtonText}>Search Friend</Text>
         </TouchableOpacity>
       </View>
