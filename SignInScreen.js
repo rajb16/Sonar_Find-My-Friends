@@ -53,7 +53,8 @@ export default function SignInScreen() {
       if (response && response.user) {
         const user = response.user;
         console.log("User signed in successfully");
-        navigation.navigate("Friends", { user });
+        navigation.navigate("Friends", { user: JSON.stringify(user) });
+        //navigation.navigate('Search,' ({user}));
       } else {
         console.error("Failed to sign in. Response or user is undefined.");
       }
