@@ -6,9 +6,11 @@ import { searchUsers, sendFriendRequest } from './friendFunctions';
 import { useNavigation } from "@react-navigation/native";
 
 
-const SearchScreen = ({ currentUser }) => {
+const SearchScreen = ({ route }) => {
 
+    
   const navigation = useNavigation();
+  const [currentUser, setCurrentUser] = useState(route.params);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
@@ -18,8 +20,12 @@ const SearchScreen = ({ currentUser }) => {
   };
 
   const handleAddFriend = async (userId) => {
-    await sendFriendRequest(currentUser.uid, userId);
-    console.log('Friend request sent successfully!');
+    if (userId) {
+      await sendFriendRequest(userId, currentUser.currentUser.uid);
+      console.log('Friend request sent successfully!');
+    } else {
+      console.error('User ID is undefined. Cannot send friend request.');
+    }
   };
 
   const handleBack = () => {
@@ -30,6 +36,7 @@ const SearchScreen = ({ currentUser }) => {
     <View style={styles.listItem}>
       <Text style={styles.name}>{item.name}</Text>
       <TouchableOpacity style={styles.button} onPress={() => handleAddFriend(item.userId)}>
+        {console.log(item.userId)}
         <Text>Add Friend</Text>
       </TouchableOpacity>
     </View>
@@ -115,8 +122,8 @@ const styles = StyleSheet.create({
     },
     backButton: {
         position: 'absolute',
-        bottom: 100,
-        left: 16,
+        top: 10,
+        right: 16,
         backgroundColor: '#3498db',
         padding: 10,
         borderRadius: 8,
