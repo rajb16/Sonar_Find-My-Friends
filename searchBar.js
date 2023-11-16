@@ -3,8 +3,12 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { searchUsers, sendFriendRequest } from './friendFunctions';
+import { useNavigation } from "@react-navigation/native";
+
 
 const SearchScreen = ({ currentUser }) => {
+
+  const navigation = useNavigation();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
@@ -16,6 +20,10 @@ const SearchScreen = ({ currentUser }) => {
   const handleAddFriend = async (userId) => {
     await sendFriendRequest(currentUser.uid, userId);
     console.log('Friend request sent successfully!');
+  };
+
+  const handleBack = () => {
+    navigation.goBack();
   };
 
   const renderItem = ({ item }) => (
@@ -30,6 +38,9 @@ const SearchScreen = ({ currentUser }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
         <TextInput
           style={styles.searchInput}
           placeholder="Search by name"
@@ -102,6 +113,19 @@ const styles = StyleSheet.create({
     addButtonText: {
       color: 'white',
     },
+    backButton: {
+        position: 'absolute',
+        bottom: 100,
+        left: 16,
+        backgroundColor: '#3498db',
+        padding: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      backButtonText: {
+        color: 'white',
+      },
   });
 
 export default SearchScreen;
