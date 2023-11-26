@@ -54,8 +54,8 @@ export default function SignInScreen() {
         const user = response.user;
         console.log("User signed in successfully");
         // navigation.navigate("Friends", { user: JSON.stringify(user) });
-        // navigation.navigate("Search,"({ user }));
-        navigation.navigate("Home");
+        // navigation.navigate("Search", ({ user }));
+        navigation.navigate("Home", { user: JSON.stringify(user) });
       } else {
         console.error("Failed to sign in. Response or user is undefined.");
       }
@@ -73,7 +73,7 @@ export default function SignInScreen() {
         onChangeText={setEmail}
         placeholder="E-mail"
         keyboardType="email-address"
-        autoCompleteType="off"
+        autoCompleteType="on"
       />
       <TextInput
         style={styles.input}
@@ -83,8 +83,8 @@ export default function SignInScreen() {
         secureTextEntry={true}
       />
       <View style={styles.buttons}>
-        <Button title="signin" onPress={signIn} />
-        <Button title="Create" onPress={createAccount} />
+        <Button title="Sign-In" onPress={signIn} />
+        <Button title="Sign-Up" onPress={createAccount} />
       </View>
     </View>
   );

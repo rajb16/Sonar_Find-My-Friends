@@ -8,13 +8,17 @@ import {
   Modal,
   Text,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import askLocation, { myMarker } from "./askLocation";
 import ModalOverlay from "./ModalOverlay";
 import {} from "react-native-maps";
 import { Video, ResizeMode } from "expo-av";
 import { sendFriendRequest, acceptFriendRequest } from "./friendFunctions";
+import { getDoc, collection, onSnapshot } from "firebase/firestore";
+
+import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
+import getUserPosts, { lastElementId } from "./getPosts.js";
 /** Temp icons dictionary. it will be replaced by firebase */
 const localIcons = {
   logo: require("./images/logo.png"),
@@ -30,6 +34,30 @@ const localIcons = {
  *  Temp list containing the ID, location coordinates, and
  *  username of a user
  */
+import { getAuth } from "firebase/auth";
+import { getDocs } from "firebase/firestore";
+
+// const example = [];
+// async function componentDidMount() {
+//   if (user !== null) {
+//     // const uid = String(user.uid);
+//     // get Images from Firestore & save To State
+
+//     const querySnapshot = await getDocs(collection(FIREBASE_DB, "users/"));
+//     querySnapshot.forEach((doc) => {
+//       example.push({
+//         name: doc.data().name, //Work
+//         id: doc.data().id, //Work
+//         //text: doc.data().text, //Work
+//         //timestamp: doc.data().timestamp, //Work
+//         //imageRef: doc.data().profilePic, // saved in saveToFireStore(): Working
+//       });
+//     });
+//   }
+
+//   console.log(example);
+// }
+
 const markerList = [
   {
     id: 1,
@@ -75,7 +103,7 @@ const markerList = [
     },
   },
 ];
-
+var elem = "";
 const renderMarkers = () => {
   const renderedMarkers = _.map(markerList, (marker) => {
     const { username, type, img, video, coordinate, id } = marker;
@@ -83,35 +111,43 @@ const renderMarkers = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const displyMedia = () => {
-      if (type === "image") {
-        return (
-          <Image
-            source={img}
-            style={{
-              flex: 0,
-              width: "100%",
-              height: "100%",
-              resizeMode: "contain",
-            }}
-          />
-        );
-      } else if (type === "video") {
-        const videoRef = useRef(null);
-        return (
-          <View style={styles.vidcontainer}>
-            <Video
-              source={require("./images/lambo.mp4")} // the video file
-              resizeMode={ResizeMode.CONTAIN}
-              style={styles.video}
-              isLooping
-              useNativeControls={true}
-              shouldPlay
-              // onReadyForDisplay={}
+      if (elem === undefined) {
+        return;
+      } else {
+        // console.log(lastElementId.fileType);
+        if (lastElementId.fileType === "image") {
+          return (
+            <Image
+              source={{
+                uri: lastElementId.url,
+              }}
+              style={{
+                flex: 0,
+                width: "100%",
+                height: "100%",
+                resizeMode: "contain",
+              }}
             />
-          </View>
-        );
+          );
+        } else if (lastElementId.fileType === "video") {
+          const videoRef = useRef(null);
+          return (
+            <View style={styles.vidcontainer}>
+              <Video
+                source={require("./images/lambo.mp4")} // the video file
+                resizeMode={ResizeMode.CONTAIN}
+                style={styles.video}
+                isLooping
+                useNativeControls={true}
+                shouldPlay
+                // onReadyForDisplay={}
+              />
+            </View>
+          );
+        }
       }
     };
+
     const displayMediaHomeScreen = () => {
       if (type === "image") {
         return (
@@ -239,9 +275,37 @@ const renderMarkers = () => {
 export default function HomeScreen() {
   {
     askLocation();
+
     //const sender = "BxDdHicedPSm9fQaenbl1smae0O2";
     //const recip = "5Wp3IxFx1FefEDBubjfS7W0xEzR2";
     //acceptFriendRequest(sender, recip);
+  }
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user !== null) {
+    // The user object has basic properties such as display name, email, etc.
+    const name = user.displayName;
+    // const email = user.email;
+    // const photoURL = user.photoURL;
+    //   const emailVerified = user.emailVerified;
+    const uid = user.uid;
+    // The user's ID, unique to the Firebase project. Do NOT use
+    // this value to authenticate with your backend server, if
+    // you have one. Use User.getToken() instead.
+
+    // console.log(uid);
+    useEffect(() => {
+      const MINUTE_MS = 1000;
+      const interval = setInterval(() => {
+        getUserPosts(uid);
+        elem = lastElementId;
+      }, MINUTE_MS);
+
+      return () => clearInterval(interval);
+    }, []);
+  } else {
+    console.log("null user");
   }
 
   const changeIcon = () => {
