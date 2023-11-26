@@ -19,7 +19,7 @@ import { sendFriendRequest, acceptFriendRequest } from "./friendFunctions";
 const localIcons = {
   logo: require("./images/logo.png"),
   markerImg: require("./images/marker.png"),
-  miata: require("./images/miata.jpg"),
+  miata: require("./images/rx7.jpg"),
   sunset: require("./images/sunset.jpg"),
   skyline: require("./images/r30.jpg"),
   loading: require("./images/earth.gif"),
@@ -248,7 +248,7 @@ export default function HomeScreen() {
     let img;
     let val = false;
     myMarker.latitude > 0 ? (val = true) : (val = false);
-    val ? (img = localIcons.markerImg) : (img = localIcons.loading);
+    val ? (img = localIcons.markerImg) : (img = localIcons.logo);
 
     return img;
   };
