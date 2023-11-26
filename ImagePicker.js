@@ -89,12 +89,19 @@ export default function PickImage() {
       },
       (error) => {
         // handle error
+        console.log(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           console.log("File available at: ", downloadURL);
           // save record
-          await saveRecord(fileType, downloadURL, new Date().toISOString(), myMarker.latitude, myMarker.longitude);
+          await saveRecord(
+            fileType,
+            downloadURL,
+            new Date().toISOString(),
+            myMarker.latitude,
+            myMarker.longitude
+          );
           setImage("");
           setVideo("");
         });
@@ -106,8 +113,12 @@ export default function PickImage() {
     try {
       const filesCollection = collection(FIREBASE_DB, "files");
       const userID = FIREBASE_AUTH.currentUser.uid;
-      const userFilesCollection = collection(filesCollection, userID, "userFiles");
-  
+      const userFilesCollection = collection(
+        filesCollection,
+        userID,
+        "userFiles"
+      );
+
       const docRef = await addDoc(userFilesCollection, {
         fileType,
         url,
@@ -115,7 +126,7 @@ export default function PickImage() {
         lat,
         long,
       });
-  
+
       console.log("Document saved correctly: ", docRef.id);
     } catch (e) {
       console.error(e);
