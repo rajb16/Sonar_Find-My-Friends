@@ -37,27 +37,6 @@ const localIcons = {
 import { getAuth } from "firebase/auth";
 import { getDocs } from "firebase/firestore";
 
-// const example = [];
-// async function componentDidMount() {
-//   if (user !== null) {
-//     // const uid = String(user.uid);
-//     // get Images from Firestore & save To State
-
-//     const querySnapshot = await getDocs(collection(FIREBASE_DB, "users/"));
-//     querySnapshot.forEach((doc) => {
-//       example.push({
-//         name: doc.data().name, //Work
-//         id: doc.data().id, //Work
-//         //text: doc.data().text, //Work
-//         //timestamp: doc.data().timestamp, //Work
-//         //imageRef: doc.data().profilePic, // saved in saveToFireStore(): Working
-//       });
-//     });
-//   }
-
-//   console.log(example);
-// }
-
 const markerList = [
   {
     id: 1,
@@ -111,6 +90,20 @@ const renderMarkers = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const displyMedia = () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user !== null) {
+        // The user object has basic properties such as display name, email, etc.
+        const name = user.displayName;
+        const uid = user.uid;
+
+        // console.log(uid);
+
+        getUserPosts(uid);
+        elem = lastElementId;
+      } else {
+        console.log("null user");
+      }
       if (elem === undefined) {
         return;
       } else {
@@ -134,7 +127,7 @@ const renderMarkers = () => {
           return (
             <View style={styles.vidcontainer}>
               <Video
-                source={require("./images/lambo.mp4")} // the video file
+                source={{ uri: lastElementId.url }} // the video file
                 resizeMode={ResizeMode.CONTAIN}
                 style={styles.video}
                 isLooping
@@ -279,33 +272,6 @@ export default function HomeScreen() {
     //const sender = "BxDdHicedPSm9fQaenbl1smae0O2";
     //const recip = "5Wp3IxFx1FefEDBubjfS7W0xEzR2";
     //acceptFriendRequest(sender, recip);
-  }
-
-  const auth = getAuth();
-  const user = auth.currentUser;
-  if (user !== null) {
-    // The user object has basic properties such as display name, email, etc.
-    const name = user.displayName;
-    // const email = user.email;
-    // const photoURL = user.photoURL;
-    //   const emailVerified = user.emailVerified;
-    const uid = user.uid;
-    // The user's ID, unique to the Firebase project. Do NOT use
-    // this value to authenticate with your backend server, if
-    // you have one. Use User.getToken() instead.
-
-    // console.log(uid);
-    useEffect(() => {
-      const MINUTE_MS = 1000;
-      const interval = setInterval(() => {
-        getUserPosts(uid);
-        elem = lastElementId;
-      }, MINUTE_MS);
-
-      return () => clearInterval(interval);
-    }, []);
-  } else {
-    console.log("null user");
   }
 
   const changeIcon = () => {
