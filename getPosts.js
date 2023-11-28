@@ -24,9 +24,17 @@ export default async function getUserPosts(userId) {
       userPosts.push({ postId: doc.id, ...doc.data() });
     });
 
-    lastElementId = userPosts.pop();
-    // console.log(lastElementId.fileType);
-    return lastElementId;
+    const sorted = userPosts.sort((a, b) => {
+      const dateA = new Date(`${a.createdAt}`).valueOf();
+      const dateB = new Date(`${b.createdAt}`).valueOf();
+      if (dateA > dateB) {
+        return -1; // return -1 here for DESC order
+      }
+      return 1; // return 1 here for DESC Order
+    });
+    console.log(sorted);
+    lastElementId = sorted[0];
+    // return lastElementId;
   } catch (error) {
     console.error("Error getting user posts:", error);
     return [];

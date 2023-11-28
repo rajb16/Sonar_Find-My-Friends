@@ -123,7 +123,7 @@ const renderMarkers = () => {
             />
           );
         } else if (lastElementId.fileType === "video") {
-          const videoRef = useRef(null);
+          // const videoRef = useRef(null);
           return (
             <View style={styles.vidcontainer}>
               <Video
