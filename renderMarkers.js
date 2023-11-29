@@ -16,6 +16,7 @@ import { getUserPosts, getFriendPosts } from "./getPosts.js";
 import { getAuth } from "firebase/auth";
 import { getDocs } from "firebase/firestore";
 import { postWait } from "./HomeScreen.js";
+import { getFriends } from "./friendFunctions.js";
 /** Temp icons dictionary. it will be replaced by firebase */
 export const localIcons = {
   logo: require("./images/logo.png"),
@@ -84,6 +85,7 @@ export const renderMarkers = () => {
   const auth = getAuth();
   const user = auth.currentUser;
   const userPostMarkerList = [];
+  const friendsList = [];
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   var [val, setData] = useState([]);
@@ -98,11 +100,18 @@ export const renderMarkers = () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       const uid = user.uid;
       const response = await getUserPosts(uid);
-      // console.log(response);
+      const friendResponse = await getFriends(uid);
+      const friends = _.map(friendResponse, (friend) => {
+        const { email, friends, name, pendingRequests, userId } = friend;
+        // console.log(email, friends, name, pendingRequests, userId);
+        friendsList.push(friends);
+        console.log(friendsList);
+      });
+      console.log(friends);
 
       const result = response[0];
       userPostMarkerList.push(result);
-      console.log(userPostMarkerList);
+      // console.log(userPostMarkerList);
       setData(userPostMarkerList);
       setIsLoading(false);
     } catch (error) {
@@ -112,21 +121,13 @@ export const renderMarkers = () => {
     }
   };
   if (isLoading) {
-    return <Marker coordinate={{ latitude: 0, longitude: 0 }} />;
-    // <Text className="loading">
-    //   {/* <div className="loading-spinner"></div> */}
-    //   <p>Loading data...</p>
-    // </Text>
+    return <Marker coordinate={{ latitude: 55, longitude: 55 }} />;
   }
-
-  // if (error) {
-  //   return <Text className="error">{error}</Text>;
-
-  var x = false;
-  if (val !== null) {
+  // console.log(val, val.length, typeof val);
+  if (val.length !== 0 && typeof val[0] !== "undefined") {
     const renderedMarkers = _.map(val, (marker) => {
-      const { username, createdAt, fileType, lat, long, postId, url } = marker;
-      console.log(username, createdAt, fileType, lat, long, postId);
+      const { name, createdAt, fileType, lat, long, postId, url } = marker;
+      console.log(createdAt, fileType, lat, long, postId);
 
       const displyMedia = () => {
         if (marker === undefined) {
@@ -252,7 +253,7 @@ export const renderMarkers = () => {
                         <Text style={styles.touchableText}>ᐊ</Text>
                       </View>
                     </TouchableOpacity>
-                    <Text style={styles.userText}>{username}</Text>
+                    <Text style={styles.userText}>{name}</Text>
                     <View
                       style={{
                         flex: 0,
@@ -290,24 +291,16 @@ export const renderMarkers = () => {
                   textShadowRadius: 50,
                 }}
               >
-                {username}
+                {name}
               </Text>
             </View>
           </View>
         </Marker>
-
-        // </Callout>
       );
-      //     }
-      //   } catch (e) {
-      //     return (
-      //       <View>
-      //         <Text>na</Text>
-      //       </View>
-      //     );
-      //   }
     });
     return renderedMarkers;
+  } else {
+    return <Marker coordinate={{ latitude: 55, longitude: 55 }} />;
   }
 };
 
