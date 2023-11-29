@@ -138,13 +138,6 @@ export default function PickImage() {
       <View style={styles.buttonCallout}>
         <TouchableOpacity>
           <View style={{ paddingLeft: "10%", width: 55 }}>
-            {/* 
-            <Entypo.Button
-              name="camera"
-              backgroundColor={"transparent"}
-              onPress={pickImage}
-              suppressHighlighting={false}
-            /> */}
             <View style={styles.container}>
               <TouchableOpacity style={styles.cameraButton} onPress={pickImage}>
                 <Text style={styles.touchableText}>📷</Text>
@@ -178,12 +171,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     position: "absolute",
     bottom: 40,
-    // marginRight: "10%",
-    // paddingLeft: 10,
-    // justifyContent: "center",
     backgroundColor: "transparent",
-    // borderWidth: 0.5,
-    // borderRadius: 20,
   },
   touchableText: {
     fontSize: 24,
