@@ -1,11 +1,17 @@
-import { getFirestore, collection, query, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  getDocs,
+  doc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import React, { useState, useRef, useEffect } from "react";
+import { getFriends } from "./friendFunctions";
 
-let lastElementId = "";
 const auth = getAuth();
 const user = auth.currentUser;
-export default async function getUserPosts(userId) {
+export async function getUserPosts(userId) {
   try {
     const db = getFirestore();
 
@@ -32,15 +38,15 @@ export default async function getUserPosts(userId) {
       }
       return 1; // return 1 here for DESC Order
     });
-    console.log(sorted);
-    lastElementId = sorted[0];
-    // return lastElementId;
+
+    // sorted[0].push(...lastElementId);
+    console.log(sorted[0]);
+    return sorted;
   } catch (error) {
     console.error("Error getting user posts:", error);
-    return [];
   }
 }
-export { lastElementId };
+
 // const example = [];
 // async function componentDidMount() {
 //   if (user !== null) {
