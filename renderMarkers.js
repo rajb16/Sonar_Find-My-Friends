@@ -85,6 +85,8 @@ export const renderMarkers = () => {
   const auth = getAuth();
   const user = auth.currentUser;
   const userPostMarkerList = [];
+  const friendPostMarkerList = [];
+
   const friendsList = [];
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -101,17 +103,22 @@ export const renderMarkers = () => {
       const uid = user.uid;
       const response = await getUserPosts(uid);
       const friendResponse = await getFriends(uid);
+      // console.log(friendResponse);
       const friends = _.map(friendResponse, (friend) => {
         const { email, friends, name, pendingRequests, userId } = friend;
         // console.log(email, friends, name, pendingRequests, userId);
-        friendsList.push(friends);
-        console.log(friendsList);
+        friendsList.push(friends[0]);
       });
-      console.log(friends);
-
+      // console.log(friends);
+      const friendsUserPosts = friendsList.forEach(async (value) => {
+        const FUP = await getUserPosts(value);
+        console.log(FUP);
+        friendPostMarkerList.push(FUP);
+        console.log(friendPostMarkerList);
+      });
       const result = response[0];
       userPostMarkerList.push(result);
-      // console.log(userPostMarkerList);
+      console.log(userPostMarkerList);
       setData(userPostMarkerList);
       setIsLoading(false);
     } catch (error) {

@@ -40,7 +40,7 @@ export async function getUserPosts(userId) {
     });
 
     // sorted[0].push(...lastElementId);
-    console.log(sorted[0]);
+    // console.log(sorted[0]);
     return sorted;
   } catch (error) {
     console.error("Error getting user posts:", error);
