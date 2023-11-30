@@ -17,13 +17,13 @@ import { useNavigation } from "@react-navigation/native";
 
 
 
-export default function ModalOverlay({ user }) {
+export default function ModalOverlay() {
   const [modalVisible, setModalVisible] = useState(false);
   const [plusVisible, setPlusVisible] = useState(true);
   const navigation = useNavigation();
 
   const onFriendsListPress = () => {
-    navigation.navigate("Friends", { user });
+    navigation.navigate("Friends");
   
   }
 
