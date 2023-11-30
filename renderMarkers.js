@@ -95,7 +95,7 @@ export const renderMarkers = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [val]);
   const fetchData = async () => {
     try {
       // Simulate a delay of 2 seconds
@@ -103,9 +103,9 @@ export const renderMarkers = () => {
       const uid = user.uid;
       const response = await getUserPosts(uid);
       const friendResponse = await getFriends(uid);
-      // console.log(friendResponse);
+      console.log(friendResponse);
       const friends = _.map(friendResponse, (friend) => {
-        const { email, friends, name, pendingRequests, userId } = friend;
+        const { email, friends, name,  userId } = friend;
         // console.log(email, friends, name, pendingRequests, userId);
         friendsList.push(friends[0]);
       });

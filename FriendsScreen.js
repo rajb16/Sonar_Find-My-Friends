@@ -5,9 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { SearchBar } from 'react-native-screens';
 import { useNavigation } from "@react-navigation/native";
 
-const FriendsScreen = ({ route }) => {
+const FriendsScreen = ({ user }) => {
   const navigation = useNavigation();
-  const [currentUser, setCurrentUser] = useState(JSON.parse(route.params.user));
+  const [currentUser, setCurrentUser] = useState({user});
   const [pendingRequests, setPendingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);

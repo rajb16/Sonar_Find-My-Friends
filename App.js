@@ -17,8 +17,8 @@ export default App = () => {
         <>
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
-          {/* <Stack.Screen name="Friends" component={FriendsScreen} /> */}
-          {/* <Stack.Screen name="Search" component={SearchScreen} /> */}
+          <Stack.Screen name="Friends" component={FriendsScreen} /> 
+          <Stack.Screen name="Search" component={SearchScreen} /> 
         </>
       </Stack.Navigator>
     </NavigationContainer>
