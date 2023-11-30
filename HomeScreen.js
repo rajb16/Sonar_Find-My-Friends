@@ -22,6 +22,8 @@ import { friendRenderMarkers } from "./renderFriendMarker.js";
 import { getAuth } from "firebase/auth";
 export default function HomeScreen({ route }) {
   const user = JSON.parse(route.params.user);
+export default function HomeScreen() {
+
   //const sender = "BxDdHicedPSm9fQaenbl1smae0O2";
   //const recip = "5Wp3IxFx1FefEDBubjfS7W0xEzR2";
   //acceptFriendRequest(sender, recip);
@@ -93,7 +95,7 @@ export default function HomeScreen({ route }) {
           )} */}
         </Marker>
       </MapView>
-      <View>{ModalOverlay({ user })}</View>
+      <View>{ModalOverlay()}</View>
     </View>
   );
 }
