@@ -12,14 +12,28 @@ import Entypo from "react-native-vector-icons/Entypo";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Feather";
 import PickImage from "./ImagePicker.js";
+import { useNavigation } from "@react-navigation/native";
 
-export default function ModalOverlay() {
+
+
+
+export default function ModalOverlay({ user }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [plusVisible, setPlusVisible] = useState(true);
+  const navigation = useNavigation();
+
+  const onFriendsListPress = () => {
+    navigation.navigate("Friends", { user });
+  
+  }
+
+
   const onPlusPress = () => {
     setModalVisible(true);
     setPlusVisible(false);
   };
+
+
 
   const display = plusVisible ? "flex" : "none";
   return (
@@ -43,6 +57,27 @@ export default function ModalOverlay() {
               }}
             >
               +
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            onFriendsListPress();
+          }}
+          style={[styles.touchable, { display }]}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 35,
+              }}
+            >
+             🤝
             </Text>
           </View>
         </TouchableOpacity>
