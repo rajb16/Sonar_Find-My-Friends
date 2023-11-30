@@ -4,10 +4,15 @@ import { getPendingRequests, getFriends, acceptFriendRequest, declineFriendReque
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SearchBar } from 'react-native-screens';
 import { useNavigation } from "@react-navigation/native";
+import { getAuth } from "firebase/auth";
 
-const FriendsScreen = ({ user }) => {
+const FriendsScreen = () => {
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
   const navigation = useNavigation();
-  const [currentUser, setCurrentUser] = useState({user});
+  const [currentUser, setCurrentUser] = useState(user);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
