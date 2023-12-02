@@ -92,7 +92,7 @@ export const renderMarkers = () => {
   const [error, setError] = useState(null);
   var [val, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  var [friendsData, setFriendData] = useState([]);
+
   const [flag, setFlag] = useState(true);
   useEffect(() => {
     fetchData();

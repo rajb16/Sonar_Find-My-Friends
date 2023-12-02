@@ -31,7 +31,7 @@ export const localIcons = {
 export const friendRenderMarkers = () => {
   const auth = getAuth();
   const user = auth.currentUser;
-  const friendPostMarkerList = [];
+  var friendPostMarkerList = [];
 
   const friendsList = [];
   const [isLoading, setIsLoading] = useState(true);
@@ -39,21 +39,24 @@ export const friendRenderMarkers = () => {
   const [friendModalVisible, setFriendModalVisible] = useState(false);
   var [friendsData, setFriendData] = useState([]);
   const [flag, setFlag] = useState(true);
+
   useEffect(() => {
+    console.log("reloaded");
     fetchFriendData();
   }, []);
-  var time = 2000;
+  var time = 20000;
+  const timer = async () => {
+    await new Promise((resolve) => {
+      // time = 5000;
+
+      setTimeout(resolve, time);
+      setFlag(!flag);
+    });
+  };
   const fetchFriendData = async () => {
     try {
       // Simulate a delay of 2 seconds
 
-      await new Promise((resolve) => {
-        // if (flag) {
-        //   time = 5000;
-        //   setFlag(false);
-        // }
-        setTimeout(resolve, time);
-      });
       const uid = user.uid;
 
       const friendResponse = await getFriends(uid);
@@ -69,10 +72,9 @@ export const friendRenderMarkers = () => {
       friendsList.forEach(async (value) => {
         FUP = await getUserPosts(value);
         friendPostMarkerList.push(FUP[0]);
-        setFriendData(friendPostMarkerList);
-        console.log(friendPostMarkerList);
+        // console.log(friendPostMarkerList);
       });
-
+      setFriendData(friendPostMarkerList);
       setIsLoading(false);
     } catch (error) {
       setError(error.message);
@@ -83,50 +85,13 @@ export const friendRenderMarkers = () => {
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
-  if (friendsData.length !== 0 && typeof friendsData[0] !== "undefined") {
+  if (friendsData.length > 0 && typeof friendsData[0] !== "undefined") {
     const friendsRenderedMarkers = _.map(friendsData, (value) => {
       const { name, createdAt, fileType, lat, long, postId, url } = value;
       // console.log(createdAt, fileType, lat, long, postId);
-
-      const displyMedia = () => {
-        if (value === undefined) {
-          // console.log("empty");
-          return;
-        } else {
-          // console.log(lastElementId[0].fileType);
-          if (fileType === "image") {
-            return (
-              <Image
-                source={{
-                  uri: url,
-                }}
-                style={{
-                  flex: 0,
-                  width: "100%",
-                  height: "100%",
-                  resizeMode: "contain",
-                }}
-              />
-            );
-          } else if (fileType === "video") {
-            // const videoRef = useRef(null);
-            return (
-              <View style={styles.vidcontainer}>
-                <Video
-                  source={{ uri: url }} // the video file
-                  resizeMode={ResizeMode.CONTAIN}
-                  style={styles.video}
-                  isLooping
-                  useNativeControls={true}
-                  shouldPlay
-                  // onReadyForDisplay={}
-                />
-              </View>
-            );
-          }
-        }
-      };
-
+      // friendPostMarkerList = [];
+      // console.log(url);
+      // if each val in list dosent have postid, poceed
       const displayMediaHomeScreen = () => {
         if (value === undefined) {
           return;
@@ -173,6 +138,7 @@ export const friendRenderMarkers = () => {
       // console.log(lati, longi);
       //   try {
       // if (typeof lati !== "undefined" && lati) {
+      // setFlag(!flag);
       return (
         <Marker
           key={postId}
@@ -219,7 +185,7 @@ export const friendRenderMarkers = () => {
                         marginBottom: "130%",
                       }}
                     >
-                      {displyMedia()}
+                      {displyMedia(value, fileType, url)}
                     </View>
                   </View>
                 </Modal>
@@ -263,7 +229,45 @@ export const friendRenderMarkers = () => {
     return <Marker coordinate={{ latitude: 55, longitude: 55 }} />;
   }
 };
-
+const displyMedia = (value, fileType, url) => {
+  if (value === undefined) {
+    // console.log("empty");
+    return;
+  } else {
+    // console.log(lastElementId[0].fileType);
+    if (fileType === "image") {
+      // console.log(url);
+      return (
+        <Image
+          source={{
+            uri: url,
+          }}
+          style={{
+            flex: 0,
+            width: "100%",
+            height: "100%",
+            resizeMode: "contain",
+          }}
+        />
+      );
+    } else if (fileType === "video") {
+      // const videoRef = useRef(null);
+      return (
+        <View style={styles.vidcontainer}>
+          <Video
+            source={{ uri: url }} // the video file
+            resizeMode={ResizeMode.CONTAIN}
+            style={styles.video}
+            isLooping
+            useNativeControls={true}
+            shouldPlay
+            // onReadyForDisplay={}
+          />
+        </View>
+      );
+    }
+  }
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
