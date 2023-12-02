@@ -17,6 +17,7 @@ import { getAuth } from "firebase/auth";
 import { getDocs } from "firebase/firestore";
 import { postWait } from "./HomeScreen.js";
 import { getFriends } from "./friendFunctions.js";
+import fetchFriendsPosts from "./fetchFriendsPosts.js";
 /** Temp icons dictionary. it will be replaced by firebase */
 export const localIcons = {
   logo: require("./images/logo.gif"),
@@ -29,57 +30,24 @@ export const localIcons = {
 };
 
 export const friendRenderMarkers = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const friendPostMarkerList = [];
 
-  const friendsList = [];
+  const onResultChange = (newResult) => {
+    setFriendData(newResult);
+    setIsLoading(false);
+
+  };
+
+  const friendPosts = fetchFriendsPosts(10000, onResultChange);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [friendModalVisible, setFriendModalVisible] = useState(false);
   var [friendsData, setFriendData] = useState([]);
-  const [flag, setFlag] = useState(true);
+
   useEffect(() => {
-    fetchFriendData();
-  }, []);
-  var time = 2000;
-  const fetchFriendData = async () => {
-    try {
-      // Simulate a delay of 2 seconds
+    console.log("friends markers reloaded");
+  }, [friendsData]);
 
-      await new Promise((resolve) => {
-        // if (flag) {
-        //   time = 5000;
-        //   setFlag(false);
-        // }
-        setTimeout(resolve, time);
-      });
-      const uid = user.uid;
 
-      const friendResponse = await getFriends(uid);
-      var FUP = [];
-      //   console.log(friendResponse);
-      const friends = _.map(friendResponse, (friend) => {
-        const { email, friends, name, userId } = friend;
-        // console.log(email, friends, name, pendingRequests, userId);
-        friendsList.push(userId);
-        console.log(userId);
-      });
-      // console.log(friends);
-      friendsList.forEach(async (value) => {
-        FUP = await getUserPosts(value);
-        friendPostMarkerList.push(FUP[0]);
-        setFriendData(friendPostMarkerList);
-        console.log(friendPostMarkerList);
-      });
-
-      setIsLoading(false);
-    } catch (error) {
-      setError(error.message);
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
