@@ -20,13 +20,15 @@ import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
 import { renderMarkers, localIcons } from "./renderMarkers.js";
 import { friendRenderMarkers } from "./renderFriendMarker.js";
 import { getAuth } from "firebase/auth";
-export default function HomeScreen({ route }) {
-  const user = JSON.parse(route.params.user);
+
+
 export default function HomeScreen() {
 
-  //const sender = "BxDdHicedPSm9fQaenbl1smae0O2";
-  //const recip = "5Wp3IxFx1FefEDBubjfS7W0xEzR2";
-  //acceptFriendRequest(sender, recip);
+  const [modalVisible, setModalVisible] = useState(false);
+  const onPlusPress = () => {
+    setModalVisible(!modalVisible);
+    console.log("modalVisible");
+  };
 
   {
     askLocation();
@@ -56,11 +58,7 @@ export default function HomeScreen() {
 
     return width;
   };
-  const [modalVisible, setModalVisible] = useState(false);
-  const onPlusPress = () => {
-    setModalVisible(!modalVisible);
-    console.log("modalVisible");
-  };
+
   return (
     <View style={styles.container}>
       <MapView
