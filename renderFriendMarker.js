@@ -41,12 +41,94 @@ export const friendRenderMarkers = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [friendModalVisible, setFriendModalVisible] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
   var [friendsData, setFriendData] = useState([]);
 
   useEffect(() => {
     console.log("friends markers reloaded");
   }, [friendsData]);
 
+
+  const displyMedia = () => {
+    if (!selectedFriend) {
+      // console.log("empty");
+      return null;
+    } 
+    else {
+      const { fileType, url } = selectedFriend;
+      // console.log(lastElementId[0].fileType);
+      if (fileType === "image") {
+        return (
+          <Image
+            source={{
+              uri: url,
+            }}
+            style={{
+              flex: 0,
+              width: "100%",
+              height: "100%",
+              resizeMode: "contain",
+            }}
+          />
+        );
+      } else if (fileType === "video") {
+        // const videoRef = useRef(null);
+        return (
+          <View style={styles.vidcontainer}>
+            <Video
+              source={{ uri: url }} // the video file
+              resizeMode={ResizeMode.CONTAIN}
+              style={styles.video}
+              isLooping
+              useNativeControls={true}
+              shouldPlay
+              // onReadyForDisplay={}
+            />
+          </View>
+        );
+      }
+    }
+  };
+
+  const displayMediaHomeScreen = () => {
+    if (value === undefined) {
+      return;
+    } else {
+      // console.log(lastElementId[0].fileType);
+      if (fileType === "image") {
+        return (
+          <Image
+            source={{ uri: url }}
+            style={{
+              height: 30,
+              width: 30,
+              borderRadius: 30,
+              borderColor: "rgba(0,0,0,1.0)",
+              borderWidth: 0.5,
+            }}
+          />
+        );
+      } else if (fileType === "video") {
+        // const player = useRef(null);
+        return (
+          <View style={styles.vidcontainer}>
+            <Video
+              source={{ uri: url }}
+              // ref={player}
+              paused={true}
+              style={{
+                height: 30,
+                width: 30,
+                borderRadius: 30,
+                borderColor: "rgba(0,0,0,1.0)",
+                borderWidth: 0.5,
+              }}
+            />
+          </View>
+        );
+      }
+    }
+  };
 
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
@@ -56,45 +138,7 @@ export const friendRenderMarkers = () => {
       const { name, createdAt, fileType, lat, long, postId, url } = value;
       // console.log(createdAt, fileType, lat, long, postId);
 
-      const displyMedia = () => {
-        if (value === undefined) {
-          // console.log("empty");
-          return;
-        } else {
-          // console.log(lastElementId[0].fileType);
-          if (fileType === "image") {
-            return (
-              <Image
-                source={{
-                  uri: url,
-                }}
-                style={{
-                  flex: 0,
-                  width: "100%",
-                  height: "100%",
-                  resizeMode: "contain",
-                }}
-              />
-            );
-          } else if (fileType === "video") {
-            // const videoRef = useRef(null);
-            return (
-              <View style={styles.vidcontainer}>
-                <Video
-                  source={{ uri: url }} // the video file
-                  resizeMode={ResizeMode.CONTAIN}
-                  style={styles.video}
-                  isLooping
-                  useNativeControls={true}
-                  shouldPlay
-                  // onReadyForDisplay={}
-                />
-              </View>
-            );
-          }
-        }
-      };
-
+      
       const displayMediaHomeScreen = () => {
         if (value === undefined) {
           return;
@@ -134,6 +178,8 @@ export const friendRenderMarkers = () => {
           }
         }
       };
+    
+
 
       // console.log(lati, longi);
       var lati = lat || 0;
@@ -150,6 +196,7 @@ export const friendRenderMarkers = () => {
             longitude: longi,
           }}
           onPress={() => {
+            setSelectedFriend(value);
             setFriendModalVisible(!friendModalVisible);
             console.log("modalVisible");
           }}
