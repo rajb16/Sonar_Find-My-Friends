@@ -32,31 +32,27 @@ const fetchFriendsPosts = (interval = 10000, onResultChange) => {
       var newResult;
 
       const friendResponse = await getFriends(uid);
-      var FUP = [];
       const friendsList = [];
       const friendPostMarkerList = [];
-
+    
       const friends = map(friendResponse, (friend) => {
         const { email, friends, name, userId } = friend;
         friendsList.push(userId);
       });
-
-      friendsList.forEach(async (value) => {
-        FUP = await getUserPosts(value);
-        friendPostMarkerList.push(FUP[0]);
-        newResult = friendPostMarkerList;
-        console.log(newResult);
-        setResult(newResult);
-        onResultChange(newResult);
+    
+      const fetchPostsPromises = friendsList.map(async (value) => {
+        const FUP = await getUserPosts(value);
+        return FUP[0];
       });
-
-
-
-
-
- // Notify the updated result
+    
+      const fetchedPosts = await Promise.all(fetchPostsPromises);
+    
+      friendPostMarkerList.push(...fetchedPosts); 
+      newResult = friendPostMarkerList;
+      setResult(newResult);
+      onResultChange(newResult);
     } catch (error) {
-      // Handle error
+      // Handle errors
       console.error(error);
     }
   };
