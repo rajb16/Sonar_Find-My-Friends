@@ -17,6 +17,7 @@ import { getAuth } from "firebase/auth";
 import { getDocs } from "firebase/firestore";
 import { postWait } from "./HomeScreen.js";
 import { getFriends } from "./friendFunctions.js";
+import fetchFriendsPosts from "./fetchFriendsPosts.js";
 /** Temp icons dictionary. it will be replaced by firebase */
 export const localIcons = {
   logo: require("./images/logo.gif"),
@@ -29,59 +30,21 @@ export const localIcons = {
 };
 
 export const friendRenderMarkers = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  var friendPostMarkerList = [];
+  const onResultChange = (newResult) => {
+    setFriendData(newResult);
+    setIsLoading(false);
+  };
 
-  const friendsList = [];
+  const friendPosts = fetchFriendsPosts(10000, onResultChange);
+  // console.log(friendPosts);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [friendModalVisible, setFriendModalVisible] = useState(false);
+  const [friendModalVisible, setFriendModalVisible] = useState("");
   var [friendsData, setFriendData] = useState([]);
-  const [flag, setFlag] = useState(true);
 
   useEffect(() => {
-    console.log("reloaded");
-    fetchFriendData();
-  }, []);
-  var time = 20000;
-  const timer = async () => {
-    await new Promise((resolve) => {
-      // time = 5000;
+    console.log("friends markers reloaded");
+  }, [friendsData]);
 
-      setTimeout(resolve, time);
-      setFlag(!flag);
-    });
-  };
-  const fetchFriendData = async () => {
-    try {
-      // Simulate a delay of 2 seconds
-
-      const uid = user.uid;
-
-      const friendResponse = await getFriends(uid);
-      var FUP = [];
-      //   console.log(friendResponse);
-      const friends = _.map(friendResponse, (friend) => {
-        const { email, friends, name, userId } = friend;
-        // console.log(email, friends, name, pendingRequests, userId);
-        friendsList.push(userId);
-        console.log(userId);
-      });
-      // console.log(friends);
-      friendsList.forEach(async (value) => {
-        FUP = await getUserPosts(value);
-        friendPostMarkerList.push(FUP[0]);
-        // console.log(friendPostMarkerList);
-      });
-      setFriendData(friendPostMarkerList);
-      setIsLoading(false);
-    } catch (error) {
-      setError(error.message);
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
@@ -148,7 +111,7 @@ export const friendRenderMarkers = () => {
             longitude: longi,
           }}
           onPress={() => {
-            setFriendModalVisible(!friendModalVisible);
+            setFriendModalVisible(postId);
             console.log("modalVisible");
           }}
         >
