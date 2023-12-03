@@ -17,7 +17,10 @@ import { getAuth } from "firebase/auth";
 import { getDocs } from "firebase/firestore";
 import { postWait } from "./HomeScreen.js";
 import { getFriends } from "./friendFunctions.js";
+import fetchUserPosts from "./fetchUserPosts.js";
+
 /** Temp icons dictionary. it will be replaced by firebase */
+
 export const localIcons = {
   logo: require("./images/logo.gif"),
   markerImg: require("./images/marker.png"),
@@ -82,60 +85,30 @@ var elem = "";
 var name = "";
 
 export const renderMarkers = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const userPostMarkerList = [];
-  const friendPostMarkerList = [];
+  const onResultChange = (newResult) => {
+    const userPostMarkerList = [];
+    userPostMarkerList.push(newResult);
+    setIsLoading(false);
+    setData(userPostMarkerList);
+  };
 
-  const friendsList = [];
+  const userPosts = fetchUserPosts(10000, onResultChange);
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   var [val, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-
   const [flag, setFlag] = useState(true);
-  useEffect(() => {
-    fetchData();
-  }, []);
-  var time = 2000;
-  const fetchData = async () => {
-    try {
-      // Simulate a delay of 2 seconds
+  const [result, setResult] = useState([]);
 
-      await new Promise((resolve) => {
-        // if (flag) {
-        //   time = 5000;
-        //   setFlag(false);
-        // }
-        setTimeout(resolve, time);
-      });
-      const uid = user.uid;
-      const response = await getUserPosts(uid);
-      // const friendResponse = await getFriends(uid);
-      // var FUP = [];
-      // // console.log(friendResponse);
-      // const friends = _.map(friendResponse, (friend) => {
-      //   const { email, friends, name, userId } = friend;
-      //   // console.log(email, friends, name, pendingRequests, userId);
-      //   friendsList.push(friends[0]);
-      // });
-      // // console.log(friends);
-      // friendsList.forEach(async (value) => {
-      //   FUP = await getUserPosts(value);
-      //   friendPostMarkerList.push(FUP);
-      //   setFriendData(friendPostMarkerList);
-      //   console.log(friendPostMarkerList);
-      // });
-      const result = response[0];
-      userPostMarkerList.push(result);
-      setData(userPostMarkerList);
-      setIsLoading(false);
-    } catch (error) {
-      setError(error.message);
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const uid = user.uid;
+
+  useEffect(() => {
+    console.log("user marker reloaded");
+  }, [val]);
+
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
@@ -143,7 +116,6 @@ export const renderMarkers = () => {
   if (val.length !== 0 && typeof val[0] !== "undefined") {
     const renderedMarkers = _.map(val, (marker) => {
       const { name, createdAt, fileType, lat, long, postId, url } = marker;
-      // console.log(createdAt, fileType, lat, long, postId);
 
       const displyMedia = () => {
         if (marker === undefined) {
