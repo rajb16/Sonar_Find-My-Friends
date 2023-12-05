@@ -1,13 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { getPendingRequests, getFriends, acceptFriendRequest, declineFriendRequest, removeFriend } from './friendFunctions';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { SearchBar } from 'react-native-screens';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import {
+  getPendingRequests,
+  getFriends,
+  acceptFriendRequest,
+  declineFriendRequest,
+  removeFriend,
+} from "./friendFunctions";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { SearchBar } from "react-native-screens";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
 
-const FriendsScreen = () => {
+import AntDesign from "react-native-vector-icons/AntDesign";
 
+const FriendsScreen = () => {
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -51,16 +65,25 @@ const FriendsScreen = () => {
       <View style={styles.listItem}>
         <Text style={styles.name}>{item.name}</Text>
         {item.isFriend && (
-          <TouchableOpacity style={styles.removeButton} onPress={() => handleRemoveFriend(item.userId)}>
+          <TouchableOpacity
+            style={styles.removeButton}
+            onPress={() => handleRemoveFriend(item.userId)}
+          >
             <Text style={styles.removeButtonText}>Remove Friend</Text>
           </TouchableOpacity>
         )}
         {item.isPending && (
           <>
-            <TouchableOpacity style={styles.acceptButton} onPress={() => handleAcceptRequest(item.userId)}>
+            <TouchableOpacity
+              style={styles.acceptButton}
+              onPress={() => handleAcceptRequest(item.userId)}
+            >
               <Text style={styles.acceptButtonText}>Accept</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.declineButton} onPress={() => handleDeclineRequest(item.userId)}>
+            <TouchableOpacity
+              style={styles.declineButton}
+              onPress={() => handleDeclineRequest(item.userId)}
+            >
               <Text style={styles.declineButtonText}>Decline</Text>
             </TouchableOpacity>
           </>
@@ -71,6 +94,24 @@ const FriendsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={{ marginVertical: "3%" }}>
+        <Text style={{ fontSize: 25, justifyContent: "center" }}>
+          Your Friends
+        </Text>
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() => navigation.navigate("Search", { currentUser })}
+        >
+          <AntDesign
+            name="search1"
+            size={25}
+            color="#000000"
+            // style={{ shadowOpacity: 5 }}
+          />
+          {/* <Text style={styles.searchButtonText}>🔎</Text> */}
+        </TouchableOpacity>
+      </View>
+
       <View>
         {dataLoaded && !pendingRequests.length && !friends.length && (
           <Text>No friends or requests</Text>
@@ -80,7 +121,10 @@ const FriendsScreen = () => {
           <>
             <Text>Pending Requests:</Text>
             <FlatList
-              data={pendingRequests.map((request) => ({ ...request, isPending: true }))}
+              data={pendingRequests.map((request) => ({
+                ...request,
+                isPending: true,
+              }))}
               renderItem={renderItem}
               keyExtractor={(item) => item.email}
             />
@@ -89,7 +133,6 @@ const FriendsScreen = () => {
 
         {!!friends.length && (
           <>
-            <Text>Friends:</Text>
             <FlatList
               data={friends.map((friend) => ({ ...friend, isFriend: true }))}
               renderItem={renderItem}
@@ -97,9 +140,6 @@ const FriendsScreen = () => {
             />
           </>
         )}
-        <TouchableOpacity style={styles.searchButton} onPress={() => navigation.navigate('Search', ({currentUser}))}>
-          <Text style={styles.searchButtonText}>Search Friend</Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -109,15 +149,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
   },
   listItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 10,
     paddingHorizontal: 16,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 8,
     elevation: 2,
   },
@@ -125,51 +165,52 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   acceptButton: {
-    backgroundColor: '#6d69c3',
+    backgroundColor: "#6d69c3",
     padding: 10,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   acceptButtonText: {
-    color: 'white',
+    color: "white",
   },
   declineButton: {
-    backgroundColor: '#e74c3c',
+    backgroundColor: "#e74c3c",
     padding: 10,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   declineButtonText: {
-    color: 'white',
+    color: "white",
   },
   removeButton: {
-    backgroundColor: '#e74c3c',
+    backgroundColor: "#e74c3c",
     padding: 10,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   removeButtonText: {
-    color: 'white',
+    color: "white",
   },
 
   searchButton: {
-    position: 'absolute',
-    bottom: "0%",
+    position: "absolute",
+    bottom: "-5%",
     right: "5%",
-    backgroundColor: '#3498db',
+    backgroundColor: "rgba(32,32,32, 0.0)",
     padding: 10,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   searchButtonText: {
-    color: 'white',
+    color: "white",
+    fontSize: 20,
   },
 });
 

@@ -36,25 +36,108 @@ export const friendRenderMarkers = () => {
   };
 
   const friendPosts = fetchFriendsPosts(10000, onResultChange);
-  // console.log(friendPosts);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [friendModalVisible, setFriendModalVisible] = useState("");
+  const [friendModalVisible, setFriendModalVisible] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
   var [friendsData, setFriendData] = useState([]);
 
   useEffect(() => {
     console.log("friends markers reloaded");
   }, [friendsData]);
 
+  const displyMedia = () => {
+    if (!selectedFriend) {
+      // console.log("empty");
+      return null;
+    } else {
+      const { fileType, url } = selectedFriend;
+      // console.log(lastElementId[0].fileType);
+      if (fileType === "image") {
+        return (
+          <Image
+            source={{
+              uri: url,
+            }}
+            style={{
+              flex: 0,
+              width: "100%",
+              height: "100%",
+              resizeMode: "contain",
+            }}
+          />
+        );
+      } else if (fileType === "video") {
+        // const videoRef = useRef(null);
+        return (
+          <View style={styles.vidcontainer}>
+            <Video
+              source={{ uri: url }} // the video file
+              resizeMode={ResizeMode.CONTAIN}
+              style={styles.video}
+              isLooping
+              useNativeControls={true}
+              shouldPlay
+              // onReadyForDisplay={}
+            />
+          </View>
+        );
+      }
+    }
+  };
+
+  // const displayMediaHomeScreen = () => {
+  //   if (value === undefined) {
+  //     return;
+  //   } else {
+  //     // console.log(lastElementId[0].fileType);
+  //     if (fileType === "image") {
+  //       return (
+  //         <Image
+  //           source={{ uri: url }}
+  //           style={{
+  //             height: 30,
+  //             width: 30,
+  //             borderRadius: 30,
+  //             borderColor: "rgba(0,0,0,1.0)",
+  //             borderWidth: 0.5,
+  //           }}
+  //         />
+  //       );
+  //     } else if (fileType === "video") {
+  //       // const player = useRef(null);
+  //       return (
+  //         <View style={styles.vidcontainer}>
+  //           <Video
+  //             source={{ uri: url }}
+  //             // ref={player}
+  //             paused={true}
+  //             style={{
+  //               height: 30,
+  //               width: 30,
+  //               borderRadius: 30,
+  //               borderColor: "rgba(0,0,0,1.0)",
+  //               borderWidth: 0.5,
+  //             }}
+  //           />
+  //         </View>
+  //       );
+  //     }
+  //   }
+  // };
+
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
-  if (friendsData.length > 0 && typeof friendsData[0] !== "undefined") {
+  if (friendsData.length !== 0 && typeof friendsData[0] !== "undefined") {
     const friendsRenderedMarkers = _.map(friendsData, (value) => {
       const { name, createdAt, fileType, lat, long, postId, url } = value;
       // console.log(createdAt, fileType, lat, long, postId);
-      // friendPostMarkerList = [];
-      // console.log(url);
-      // if each val in list dosent have postid, poceed
+
       const displayMediaHomeScreen = () => {
         if (value === undefined) {
           return;
@@ -101,7 +184,6 @@ export const friendRenderMarkers = () => {
       // console.log(lati, longi);
       //   try {
       // if (typeof lati !== "undefined" && lati) {
-      // setFlag(!flag);
       return (
         <Marker
           key={postId}
@@ -111,7 +193,8 @@ export const friendRenderMarkers = () => {
             longitude: longi,
           }}
           onPress={() => {
-            setFriendModalVisible(postId);
+            setSelectedFriend(value);
+            setFriendModalVisible(!friendModalVisible);
             console.log("modalVisible");
           }}
         >
@@ -128,9 +211,10 @@ export const friendRenderMarkers = () => {
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+
                   // transparent={true}
                 >
-                  <View style={{ backgroundColor: "rgba(0,0,0, 0.9)" }}>
+                  <View style={{ backgroundColor: "rgba(0,0,0, 1)" }}>
                     <TouchableOpacity
                       style={styles.backModal}
                       onPress={() => {
@@ -148,7 +232,7 @@ export const friendRenderMarkers = () => {
                         marginBottom: "130%",
                       }}
                     >
-                      {displyMedia(value, fileType, url)}
+                      {displyMedia()}
                     </View>
                   </View>
                 </Modal>
@@ -192,45 +276,7 @@ export const friendRenderMarkers = () => {
     return <Marker coordinate={{ latitude: 55, longitude: 55 }} />;
   }
 };
-const displyMedia = (value, fileType, url) => {
-  if (value === undefined) {
-    // console.log("empty");
-    return;
-  } else {
-    // console.log(lastElementId[0].fileType);
-    if (fileType === "image") {
-      // console.log(url);
-      return (
-        <Image
-          source={{
-            uri: url,
-          }}
-          style={{
-            flex: 0,
-            width: "100%",
-            height: "100%",
-            resizeMode: "contain",
-          }}
-        />
-      );
-    } else if (fileType === "video") {
-      // const videoRef = useRef(null);
-      return (
-        <View style={styles.vidcontainer}>
-          <Video
-            source={{ uri: url }} // the video file
-            resizeMode={ResizeMode.CONTAIN}
-            style={styles.video}
-            isLooping
-            useNativeControls={true}
-            shouldPlay
-            // onReadyForDisplay={}
-          />
-        </View>
-      );
-    }
-  }
-};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

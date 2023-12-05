@@ -21,7 +21,9 @@ import { renderMarkers, localIcons } from "./renderMarkers.js";
 import { friendRenderMarkers } from "./renderFriendMarker.js";
 import { getAuth } from "firebase/auth";
 
+
 export default function HomeScreen() {
+
   const [modalVisible, setModalVisible] = useState(false);
   const onPlusPress = () => {
     setModalVisible(!modalVisible);
