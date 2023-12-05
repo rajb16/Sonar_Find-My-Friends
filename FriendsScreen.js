@@ -91,21 +91,30 @@ const FriendsScreen = () => {
       </View>
     </SafeAreaView>
   );
-
+  const handleBack = () => {
+    navigation.goBack();
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ marginVertical: "3%" }}>
-        <Text style={{ fontSize: 25, justifyContent: "center" }}>
-          Your Friends
-        </Text>
+      <View
+        style={{
+          marginVertical: "3%",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Text style={styles.backButtonText}>ᐊ</Text>
+        </TouchableOpacity>
+        <Text style={{ fontSize: 30, color: "#f0da37" }}>Your Friends</Text>
         <TouchableOpacity
           style={styles.searchButton}
           onPress={() => navigation.navigate("Search", { currentUser })}
         >
           <AntDesign
             name="search1"
-            size={25}
-            color="#000000"
+            size={28}
+            color="#f0da37"
             // style={{ shadowOpacity: 5 }}
           />
           {/* <Text style={styles.searchButtonText}>🔎</Text> */}
@@ -119,7 +128,7 @@ const FriendsScreen = () => {
 
         {!!pendingRequests.length && (
           <>
-            <Text>Pending Requests:</Text>
+            <Text style={{ color: "white" }}>Pending Requests:</Text>
             <FlatList
               data={pendingRequests.map((request) => ({
                 ...request,
@@ -128,6 +137,7 @@ const FriendsScreen = () => {
               renderItem={renderItem}
               keyExtractor={(item) => item.email}
             />
+            <Text>_________________________________________________</Text>
           </>
         )}
 
@@ -149,7 +159,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#3697e7",
   },
   listItem: {
     flexDirection: "row",
@@ -200,17 +210,31 @@ const styles = StyleSheet.create({
 
   searchButton: {
     position: "absolute",
-    bottom: "-5%",
-    right: "5%",
+    // bottom: "-5%",
+    right: "2%",
     backgroundColor: "rgba(32,32,32, 0.0)",
     padding: 10,
     borderRadius: 8,
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
   },
   searchButtonText: {
     color: "white",
     fontSize: 20,
+  },
+  backButton: {
+    position: "absolute",
+    left: 0,
+    width: 55,
+    height: 55,
+
+    // justifyContent: "center",
+  },
+  backButtonText: {
+    color: "#f0da37",
+    alignSelf: "center",
+    fontSize: 30,
+    // marginRight: "10%",
   },
 });
 

@@ -52,20 +52,23 @@ const SearchScreen = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* <View style={{ flex: 1 }}> */}
-      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-        <Text style={styles.backButtonText}>ᐊ</Text>
-      </TouchableOpacity>
+
       {/* </View> */}
       <View>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search by name"
-          value={searchTerm}
-          onChangeText={(text) => setSearchTerm(text)}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <Text style={styles.searchButtonText}>Search</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+            <Text style={styles.backButtonText}>ᐊ</Text>
+          </TouchableOpacity>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search by name"
+            value={searchTerm}
+            onChangeText={(text) => setSearchTerm(text)}
+          />
+          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+            <Text style={styles.searchButtonText}>Search</Text>
+          </TouchableOpacity>
+        </View>
 
         {searchResults.length > 0 && (
           <FlatList
@@ -83,18 +86,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#3697e7",
   },
   searchInput: {
-    height: 40,
-    borderColor: "gray",
+    height: "100%",
+    width: "65%",
+    borderColor: "black",
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,
     borderRadius: 8,
+    backgroundColor: "white",
   },
   searchButton: {
-    backgroundColor: "#6d69c3",
+    // position: "absolute",
+    // marginRight: 5,
+    backgroundColor: "#3e0781",
     padding: 10,
     borderRadius: 8,
     alignItems: "center",
@@ -130,38 +137,16 @@ const styles = StyleSheet.create({
     color: "white",
   },
   backButton: {
-    // position: "absolute",
-    // top: 10,
-    // right: 16,
-    // backgroundColor: "#3498db",
-    // padding: 10,
-    // borderRadius: 8,
-    // alignItems: "center",
-    // justifyContent: "center",
-    // // size: 25,
-    // width: "20%",
-    // height: "5%",
-
-    // backgroundColor: "#f0da37",
     width: 55,
     height: 55,
-    // borderRadius: 100,
-    // borderWidth: 1,
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 4,
-    //   height: 4,
-    // },
-    // shadowOpacity: 1,
-    // shadowRadius: 8,
-    // elevation: 4,
+
     justifyContent: "center",
   },
   backButtonText: {
-    color: "black",
-    alignSelf: "center",
+    color: "#f0da37",
+    // alignSelf: "center",
     fontSize: 30,
-    marginRight: "10%",
+    // marginRight: "10%",
   },
 });
 
