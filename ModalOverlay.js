@@ -10,12 +10,11 @@ import {
 import { Callout } from "react-native-maps";
 import Entypo from "react-native-vector-icons/Entypo";
 import Modal from "react-native-modal";
-import Icon from "react-native-vector-icons/Feather";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import PickImage from "./ImagePicker.js";
 import { useNavigation } from "@react-navigation/native";
-
-
-
 
 export default function ModalOverlay() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -24,21 +23,44 @@ export default function ModalOverlay() {
 
   const onFriendsListPress = () => {
     navigation.navigate("Friends");
-  
-  }
-
+  };
 
   const onPlusPress = () => {
     setModalVisible(true);
     setPlusVisible(false);
   };
 
-
-
   const display = plusVisible ? "flex" : "none";
   return (
     <Callout style={styles.buttonCallout}>
       <View>
+        <TouchableOpacity
+          onPress={() => {
+            onFriendsListPress();
+          }}
+          style={[styles.touchableFriends, { display }]}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Icon
+              name="user-friends"
+              size={20}
+              color="#000000"
+              // style={{ shadowOpacity: 5 }}
+            />
+            {/* <Text
+              style={{
+                fontSize: 35,
+              }}
+            >
+              🤝
+            </Text> */}
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             onPlusPress();
@@ -51,36 +73,23 @@ export default function ModalOverlay() {
               justifyContent: "center",
             }}
           >
-            <Text
+            <Entypo
+              name="plus"
+              size={35}
+              color="#000000"
+              // style={{ shadowOpacity: 5 }}
+            />
+            {/* <Text
               style={{
-                fontSize: 35,
+                fontSize: 40,
+                marginBottom: "20%",
               }}
             >
               +
-            </Text>
+            </Text> */}
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            onFriendsListPress();
-          }}
-          style={[styles.touchable, { display }]}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 35,
-              }}
-            >
-             🤝
-            </Text>
-          </View>
-        </TouchableOpacity>
+
         <View>
           <Modal
             // animationType="slide"
@@ -112,13 +121,19 @@ export default function ModalOverlay() {
                     justifyContent: "center",
                   }}
                 >
-                  <Text
+                  {/* <Text
                     style={{
-                      fontSize: 30,
+                      fontSize: 40,
                     }}
                   >
                     x
-                  </Text>
+                  </Text> */}
+                  <MaterialIcons
+                    name="close"
+                    size={35}
+                    color="#000000"
+                    // style={{ shadowOpacity: 5 }}
+                  />
                 </View>
               </TouchableOpacity>
             </View>
@@ -178,7 +193,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignSelf: "center",
 
-    borderWidth: 2,
+    borderWidth: 1,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -186,7 +201,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 8,
-    elevation: 5,
+    elevation: 4,
+
+    justifyContent: "center",
   },
   touchable: {
     // backgroundColor: "orange",
@@ -194,7 +211,24 @@ const styles = StyleSheet.create({
     width: 55,
     height: 55,
     borderRadius: 100,
-    borderWidth: 2,
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 8,
+    elevation: 4,
+    justifyContent: "center",
+  },
+  touchableFriends: {
+    // backgroundColor: "orange",
+    backgroundColor: "#f0da37",
+    width: 55,
+    height: 55,
+    borderRadius: 100,
+    borderWidth: 1,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -203,5 +237,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 8,
     elevation: 5,
+    justifyContent: "center",
   },
 });
