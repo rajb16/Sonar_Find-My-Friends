@@ -11,6 +11,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { searchUsers, sendFriendRequest } from "./friendFunctions";
 import { useNavigation } from "@react-navigation/native";
+import { Alert } from 'react-native';
+
 
 const SearchScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -26,6 +28,16 @@ const SearchScreen = ({ route }) => {
   const handleAddFriend = async (userId) => {
     if (userId) {
       await sendFriendRequest(userId, currentUser.currentUser.uid);
+      Alert.alert(
+        'Success',
+        'Friend request sent!',
+        [
+          {
+            text: 'OK',
+          },
+        ],
+        { cancelable: false }
+      );
       console.log("Friend request sent successfully!");
     } else {
       console.error("User ID is undefined. Cannot send friend request.");
