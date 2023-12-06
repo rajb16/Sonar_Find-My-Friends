@@ -248,11 +248,11 @@ export const renderMarkers = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(32,32,32, 1)",
+    backgroundColor: "rgba(0,0,0, 1)",
   },
   touchable: {
     // backgroundColor: "orange",
-    backgroundColor: "#04da12",
+    backgroundColor: "#ffd500",
     width: 38,
     height: 38,
     borderRadius: 56,

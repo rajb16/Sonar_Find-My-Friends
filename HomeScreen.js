@@ -22,23 +22,30 @@ import { friendRenderMarkers } from "./renderFriendMarker.js";
 import { getAuth } from "firebase/auth";
 
 export default function HomeScreen() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const onPlusPress = () => {
-    setModalVisible(!modalVisible);
-    console.log("modalVisible");
-  };
-
   {
     askLocation();
   }
 
-  const changeIcon = () => {
-    let img;
-    let val = false;
+  const logoloading = () => {
+    // let img;
+    var val = false;
     myMarker.latitude > 0 ? (val = true) : (val = false);
-    val ? (img = localIcons.markerImg) : (img = localIcons.logo);
+    // val ? (img = localIcons.markerImg) : (img = localIcons.logo);
+    if (!val) {
+      return (
+        <View style={{ justifyContent: "center" }}>
+          <Marker coordinate={myMarker}>
+            <Image
+              // source={require("./images/marker.png")}
+              source={localIcons.logo}
+              style={{ height: 150, width: 150 }}
+            />
+          </Marker>
+        </View>
+      );
+    }
 
-    return img;
+    // return img;
   };
   const changeIconHeight = () => {
     let val = false;
@@ -80,22 +87,18 @@ export default function HomeScreen() {
         {/* <View> */}
         {renderMarkers()}
         {friendRenderMarkers()}
-
-        {/* </View> */}
-        <Marker coordinate={myMarker}>
-          <Image
-            // source={require("./images/marker.png")}
-            source={changeIcon()}
-            // style={{
-            //   height: changeIconHeight(),
-            //   width: changeIconWidth(),
-            // }}
-            style={{ height: 35, width: 35 }}
-          />
-          {/* {image && (
+        {/* {image && (
             <Image source={{ uri: image }} style={{ width: 35, height: 35 }} />
           )} */}
-        </Marker>
+
+        <View>
+          <Marker coordinate={myMarker}>
+            <Image source={localIcons.logo} style={{ height: 60, width: 60 }} />
+          </Marker>
+        </View>
+        <View style={{ justifyContent: "center", marginBottom: "-125%" }}>
+          {logoloading()}
+        </View>
       </MapView>
       <View>{ModalOverlay()}</View>
     </View>
