@@ -22,7 +22,7 @@ const fetchFriendsPosts = (interval = 10000, onResultChange) => {
       const auth = getAuth();
       const user = auth.currentUser;
       const uid = user.uid;
-      var newResult;
+      const newResult = [];
 
       const friendResponse = await getFriends(uid);
       const friendsList = [];
@@ -30,19 +30,20 @@ const fetchFriendsPosts = (interval = 10000, onResultChange) => {
 
       const friends = map(friendResponse, (friend) => {
         const { email, friends, name, userId } = friend;
-
         friendsList.push(userId);
       });
 
       const fetchPostsPromises = friendsList.map(async (value) => {
         const FUP = await getUserPosts(value);
+
         return FUP[0];
       });
 
       const fetchedPosts = await Promise.all(fetchPostsPromises);
 
       friendPostMarkerList.push(...fetchedPosts);
-      newResult = friendPostMarkerList;
+      newResult.push(friendPostMarkerList[1]);
+      console.log(newResult);
       setResult(newResult);
       onResultChange(newResult);
     } catch (error) {
