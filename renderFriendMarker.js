@@ -18,17 +18,6 @@ import { getDocs } from "firebase/firestore";
 import { postWait } from "./HomeScreen.js";
 import { getFriends } from "./friendFunctions.js";
 import fetchFriendsPosts from "./fetchFriendsPosts.js";
-/** Temp icons dictionary. it will be replaced by firebase */
-export const localIcons = {
-  logo: require("./images/logo.gif"),
-  markerImg: require("./images/marker.png"),
-  miata: require("./images/rx7.jpg"),
-  sunset: require("./images/sunset.jpg"),
-  skyline: require("./images/r30.jpg"),
-  loading: require("./images/earth.gif"),
-  video: "./images/burnout.mp4",
-};
-
 export const friendRenderMarkers = () => {
   const onResultChange = (newResult) => {
     setFriendData(newResult);
@@ -160,18 +149,40 @@ export const friendRenderMarkers = () => {
             // const player = useRef(null);
             return (
               <View style={styles.vidcontainer}>
-                <Video
+                {/* <Video
                   source={{ uri: url }}
                   // ref={player}
-                  paused={true}
+                  shouldPlay
+                  useNativeControls={true}
+                  isMuted={true}
+                  paused={false}
+                  resizeMode={ResizeMode.CONTAIN}
+                  isLooping
+                  style={styles.video}
+                  // style={{
+                  //   height: 30,
+                  //   width: 30,
+                  //   borderRadius: 30,
+                  //   borderColor: "rgba(0,0,0,1.0)",
+                  //   borderWidth: 0.5,
+                  // }}
+                /> */}
+                <View
                   style={{
                     height: 30,
                     width: 30,
                     borderRadius: 30,
-                    borderColor: "rgba(0,0,0,1.0)",
+                    borderColor: "#000000",
                     borderWidth: 0.5,
+                    backgroundColor: "#115284",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
-                />
+                >
+                  <View style={{ marginTop: "-5%" }}>
+                    <Text style={{ fontSize: 16 }}>▶️</Text>
+                  </View>
+                </View>
               </View>
             );
           }
@@ -273,6 +284,7 @@ export const friendRenderMarkers = () => {
 
     return friendsRenderedMarkers;
   } else {
+    console.log("No Markers to Render");
     return <Marker coordinate={{ latitude: 55, longitude: 55 }} />;
   }
 };
