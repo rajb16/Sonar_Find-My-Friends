@@ -241,7 +241,7 @@ export const renderMarkers = () => {
 
     return renderedMarkers;
   } else {
-    return <Marker coordinate={{ latitude: 55, longitude: 55 }} />;
+    return <Marker coordinate={{ latitude: 515, longitude: 515 }} />;
   }
 };
 
