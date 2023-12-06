@@ -17,7 +17,7 @@ import { Video, ResizeMode } from "expo-av";
 import { sendFriendRequest, acceptFriendRequest } from "./friendFunctions";
 import { getDoc, collection, onSnapshot } from "firebase/firestore";
 import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
-import { renderMarkers, localIcons } from "./renderMarkers.js";
+import { renderMarkers } from "./renderMarkers.js";
 import { friendRenderMarkers } from "./renderFriendMarker.js";
 import { getAuth } from "firebase/auth";
 
@@ -55,6 +55,12 @@ export default function HomeScreen() {
     val ? (width = 35) : (width = 135);
 
     return width;
+  };
+  /** Temp icons dictionary. it will be replaced by firebase */
+
+  const localIcons = {
+    logo: require("./images/logo.gif"),
+    markerImg: require("./images/marker.png"),
   };
 
   return (
