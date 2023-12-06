@@ -37,7 +37,7 @@ export const renderMarkers = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  var   [val, setData] = useState([]);
+  var [val, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [flag, setFlag] = useState(true);
   const [result, setResult] = useState([]);
@@ -66,31 +66,37 @@ export const renderMarkers = () => {
           // console.log(lastElementId[0].fileType);
           if (fileType === "image") {
             return (
-              <Image
-                source={{
-                  uri: url,
-                }}
-                style={{
-                  flex: 0,
-                  width: "100%",
-                  height: "100%",
-                  resizeMode: "contain",
-                }}
-              />
+              <View>
+                <Text style={styles.userText}>{name}</Text>
+                <Image
+                  source={{
+                    uri: url,
+                  }}
+                  style={{
+                    flex: 0,
+                    width: "100%",
+                    height: "100%",
+                    resizeMode: "contain",
+                  }}
+                />
+              </View>
             );
           } else if (fileType === "video") {
             // const videoRef = useRef(null);
             return (
-              <View style={styles.vidcontainer}>
-                <Video
-                  source={{ uri: url }} // the video file
-                  resizeMode={ResizeMode.CONTAIN}
-                  style={styles.video}
-                  isLooping
-                  useNativeControls={true}
-                  shouldPlay
-                  // onReadyForDisplay={}
-                />
+              <View>
+                <Text style={styles.userText}>{name}</Text>
+                <View style={styles.vidcontainer}>
+                  <Video
+                    source={{ uri: url }} // the video file
+                    resizeMode={ResizeMode.CONTAIN}
+                    style={styles.video}
+                    isLooping
+                    useNativeControls={true}
+                    shouldPlay
+                    // onReadyForDisplay={}
+                  />
+                </View>
               </View>
             );
           }
@@ -174,7 +180,7 @@ export const renderMarkers = () => {
                 >
                   <View style={{ backgroundColor: "rgba(0,0,0, 1)" }}>
                     <View
-                      style={{ flexDirection: "row", justifyContent: "center" }}
+                    // style={{ flexDirection: "row", justifyContent: "center" }}
                     >
                       <TouchableOpacity
                         style={styles.backModal}
@@ -186,7 +192,6 @@ export const renderMarkers = () => {
                           <Text style={styles.touchableText}>ᐊ</Text>
                         </View>
                       </TouchableOpacity>
-                      <Text style={styles.userText}>{name}</Text>
                     </View>
 
                     <View
@@ -257,15 +262,15 @@ const styles = StyleSheet.create({
   },
   backModal: {
     // backgroundColor: "orange",
-    left: 5,
-    top: 45,
-    position: "absolute",
+    // left: 5,
+    // top: 45,
+    // position: "absolute",
     backgroundColor: "#f0da37",
     width: 45,
     height: 45,
     borderRadius: 100,
-    // marginLeft: "2%",
-    // marginTop: "10%",
+    marginLeft: "2%",
+    marginTop: "10%",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
@@ -279,9 +284,9 @@ const styles = StyleSheet.create({
   },
   userText: {
     alignSelf: "center",
-    fontSize: 35,
+    fontSize: 40,
     color: "white",
-    marginTop: "10%",
+    // marginTop: "10%",
   },
   vidcontainer: {
     // flex: 1,

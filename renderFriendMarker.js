@@ -29,7 +29,7 @@ export const friendRenderMarkers = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [friendModalVisible, setFriendModalVisible] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
-  var   [friendsData, setFriendData] = useState([]);
+  var [friendsData, setFriendData] = useState([]);
 
   useEffect(() => {
     console.log("friends markers reloaded");
@@ -40,35 +40,40 @@ export const friendRenderMarkers = () => {
       // console.log("empty");
       return null;
     } else {
-      const { fileType, url } = selectedFriend;
-      // console.log(lastElementId[0].fileType);
+      const { fileType, url, name } = selectedFriend;
       if (fileType === "image") {
         return (
-          <Image
-            source={{
-              uri: url,
-            }}
-            style={{
-              flex: 0,
-              width: "100%",
-              height: "100%",
-              resizeMode: "contain",
-            }}
-          />
+          <View>
+            <Text style={styles.userText}>{name}</Text>
+            <Image
+              source={{
+                uri: url,
+              }}
+              style={{
+                flex: 0,
+                width: "100%",
+                height: "100%",
+                resizeMode: "contain",
+              }}
+            />
+          </View>
         );
       } else if (fileType === "video") {
         // const videoRef = useRef(null);
         return (
-          <View style={styles.vidcontainer}>
-            <Video
-              source={{ uri: url }} // the video file
-              resizeMode={ResizeMode.CONTAIN}
-              style={styles.video}
-              isLooping
-              useNativeControls={true}
-              shouldPlay
-              // onReadyForDisplay={}
-            />
+          <View>
+            <Text style={styles.userText}>{name}</Text>
+            <View style={styles.vidcontainer}>
+              <Video
+                source={{ uri: url }} // the video file
+                resizeMode={ResizeMode.CONTAIN}
+                style={styles.video}
+                isLooping
+                useNativeControls={true}
+                shouldPlay
+                // onReadyForDisplay={}
+              />
+            </View>
           </View>
         );
       }
@@ -236,7 +241,7 @@ export const friendRenderMarkers = () => {
                         <Text style={styles.touchableText}>ᐊ</Text>
                       </View>
                     </TouchableOpacity>
-                    <Text style={styles.userText}>{name}</Text>
+
                     <View
                       style={{
                         flex: 0,
@@ -292,7 +297,7 @@ export const friendRenderMarkers = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(32,32,32, 0.9)",
+    backgroundColor: "rgba(32,32,32, 1)",
   },
   touchable: {
     // backgroundColor: "orange",
