@@ -38,7 +38,7 @@ export default function HomeScreen() {
             <Image
               // source={require("./images/marker.png")}
               source={localIcons.logo}
-              style={{ height: 150, width: 150 }}
+              style={{ height: 300, width: 300 }}
             />
           </Marker>
         </View>
@@ -93,7 +93,7 @@ export default function HomeScreen() {
 
         <View>
           <Marker coordinate={myMarker}>
-            <Image source={localIcons.logo} style={{ height: 60, width: 60 }} />
+            <Image source={localIcons.logo} style={{ height: 45, width: 45 }} />
           </Marker>
         </View>
         <View style={{ justifyContent: "center", marginBottom: "-125%" }}>
