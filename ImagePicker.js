@@ -16,12 +16,19 @@ import Entypo from "react-native-vector-icons/Entypo";
 // import { storage } from "./firebaseConfig";
 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+
 import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
 import { Video } from "expo-av";
 import { UploadingAndroid } from "./components/UploadingAndroid.js";
 import { myMarker } from "./askLocation.js";
-
+import { getAuth } from "firebase/auth";
 export default function PickImage() {
   const [image, setImage] = useState("");
   const [video, setVideo] = useState("");
@@ -95,13 +102,25 @@ export default function PickImage() {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           console.log("File available at: ", downloadURL);
           // save record
-          await saveRecord(
-            fileType,
-            downloadURL,
-            new Date().toISOString(),
-            myMarker.latitude,
-            myMarker.longitude
-          );
+          const auth = getAuth();
+          const user = auth.currentUser;
+
+          const userRef = doc(FIREBASE_DB, "users", user.uid);
+          const userDoc = await getDoc(userRef);
+          // console.log(userDoc);
+          if (userDoc.exists()) {
+            const name = userDoc.data().name || [];
+            // console.log(name);
+            await saveRecord(
+              name,
+              fileType,
+              downloadURL,
+              new Date().toISOString(),
+              myMarker.latitude,
+              myMarker.longitude
+            );
+          }
+
           setImage("");
           setVideo("");
         });
@@ -109,7 +128,7 @@ export default function PickImage() {
     );
   }
 
-  async function saveRecord(fileType, url, createdAt, lat, long) {
+  async function saveRecord(name, fileType, url, createdAt, lat, long) {
     try {
       const filesCollection = collection(FIREBASE_DB, "files");
       const userID = FIREBASE_AUTH.currentUser.uid;
@@ -120,6 +139,7 @@ export default function PickImage() {
       );
 
       const docRef = await addDoc(userFilesCollection, {
+        name,
         fileType,
         url,
         createdAt,
