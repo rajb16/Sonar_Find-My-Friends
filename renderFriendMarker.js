@@ -40,7 +40,7 @@ export const friendRenderMarkers = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [friendModalVisible, setFriendModalVisible] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
-  var [friendsData, setFriendData] = useState([]);
+  var   [friendsData, setFriendData] = useState([]);
 
   useEffect(() => {
     console.log("friends markers reloaded");

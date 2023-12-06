@@ -96,7 +96,7 @@ export const renderMarkers = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  var [val, setData] = useState([]);
+  var   [val, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [flag, setFlag] = useState(true);
   const [result, setResult] = useState([]);
