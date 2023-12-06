@@ -133,7 +133,7 @@ export const friendRenderMarkers = () => {
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
-  if (friendsData.length !== 0 && typeof friendsData[0] !== "undefined") {
+  if (friendsData.length < 0 && typeof friendsData[0] !== "undefined") {
     const friendsRenderedMarkers = _.map(friendsData, (value) => {
       const { name, createdAt, fileType, lat, long, postId, url } = value;
       // console.log(createdAt, fileType, lat, long, postId);

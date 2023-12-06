@@ -46,24 +46,3 @@ export async function getUserPosts(userId) {
     console.error("Error getting user posts:", error);
   }
 }
-
-// const example = [];
-// async function componentDidMount() {
-//   if (user !== null) {
-//     // const uid = String(user.uid);
-//     // get Images from Firestore & save To State
-
-//     const querySnapshot = await getDocs(collection(FIREBASE_DB, "users/"));
-//     querySnapshot.forEach((doc) => {
-//       example.push({
-//         name: doc.data().name, //Work
-//         id: doc.data().id, //Work
-//         //text: doc.data().text, //Work
-//         //timestamp: doc.data().timestamp, //Work
-//         //imageRef: doc.data().profilePic, // saved in saveToFireStore(): Working
-//       });
-//     });
-//   }
-
-//   console.log(example);
-// }
