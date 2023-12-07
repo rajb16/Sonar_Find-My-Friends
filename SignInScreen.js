@@ -71,7 +71,8 @@ export default function SignInScreen() {
         onChangeText={setEmail}
         placeholder="E-mail"
         keyboardType="email-address"
-        autoCompleteType="on"
+        autoComplete="email"
+        // autoCorrect={true}
       />
       <TextInput
         style={styles.input}
@@ -79,6 +80,8 @@ export default function SignInScreen() {
         onChangeText={setPassword}
         placeholder="Password"
         secureTextEntry={true}
+        // autoComplete="on"
+        autoComplete="password"
       />
       <View style={styles.buttons}>
         <Button title="Sign-In" onPress={signIn} />

@@ -18,17 +18,6 @@ import { getDocs } from "firebase/firestore";
 import { postWait } from "./HomeScreen.js";
 import { getFriends } from "./friendFunctions.js";
 import fetchFriendsPosts from "./fetchFriendsPosts.js";
-/** Temp icons dictionary. it will be replaced by firebase */
-export const localIcons = {
-  logo: require("./images/logo.gif"),
-  markerImg: require("./images/marker.png"),
-  miata: require("./images/rx7.jpg"),
-  sunset: require("./images/sunset.jpg"),
-  skyline: require("./images/r30.jpg"),
-  loading: require("./images/earth.gif"),
-  video: "./images/burnout.mp4",
-};
-
 export const friendRenderMarkers = () => {
   const onResultChange = (newResult) => {
     setFriendData(newResult);
@@ -40,7 +29,7 @@ export const friendRenderMarkers = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [friendModalVisible, setFriendModalVisible] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
-  var   [friendsData, setFriendData] = useState([]);
+  var [friendsData, setFriendData] = useState([]);
 
   useEffect(() => {
     console.log("friends markers reloaded");
@@ -50,32 +39,39 @@ export const friendRenderMarkers = () => {
     if (!selectedFriend) {
       return null;
     } else {
-      const { fileType, url } = selectedFriend;
+      const { fileType, url, name } = selectedFriend;
       if (fileType === "image") {
         return (
-          <Image
-            source={{
-              uri: url,
-            }}
-            style={{
-              flex: 0,
-              width: "100%",
-              height: "100%",
-              resizeMode: "contain",
-            }}
-          />
+          <View>
+            <Text style={styles.userText}>{name}</Text>
+            <Image
+              source={{
+                uri: url,
+              }}
+              style={{
+                flex: 0,
+                width: "100%",
+                height: "100%",
+                resizeMode: "contain",
+              }}
+            />
+          </View>
         );
       } else if (fileType === "video") {
         return (
-          <View style={styles.vidcontainer}>
-            <Video
-              source={{ uri: url }} 
-              resizeMode={ResizeMode.CONTAIN}
-              style={styles.video}
-              isLooping
-              useNativeControls={true}
-              shouldPlay
-            />
+          <View>
+            <Text style={styles.userText}>{name}</Text>
+            <View style={styles.vidcontainer}>
+              <Video
+                source={{ uri: url }} // the video file
+                resizeMode={ResizeMode.CONTAIN}
+                style={styles.video}
+                isLooping
+                useNativeControls={true}
+                shouldPlay
+                // onReadyForDisplay={}
+              />
+            </View>
           </View>
         );
       }
@@ -113,17 +109,40 @@ export const friendRenderMarkers = () => {
           } else if (fileType === "video") {
             return (
               <View style={styles.vidcontainer}>
-                <Video
+                {/* <Video
                   source={{ uri: url }}
-                  paused={true}
+                  // ref={player}
+                  shouldPlay
+                  useNativeControls={true}
+                  isMuted={true}
+                  paused={false}
+                  resizeMode={ResizeMode.CONTAIN}
+                  isLooping
+                  style={styles.video}
+                  // style={{
+                  //   height: 30,
+                  //   width: 30,
+                  //   borderRadius: 30,
+                  //   borderColor: "rgba(0,0,0,1.0)",
+                  //   borderWidth: 0.5,
+                  // }}
+                /> */}
+                <View
                   style={{
                     height: 30,
                     width: 30,
                     borderRadius: 30,
-                    borderColor: "rgba(0,0,0,1.0)",
+                    borderColor: "#000000",
                     borderWidth: 0.5,
+                    backgroundColor: "#115284",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
-                />
+                >
+                  <View style={{ marginTop: "-5%" }}>
+                    <Text style={{ fontSize: 16 }}>▶️</Text>
+                  </View>
+                </View>
               </View>
             );
           }
@@ -172,7 +191,7 @@ export const friendRenderMarkers = () => {
                         <Text style={styles.touchableText}>ᐊ</Text>
                       </View>
                     </TouchableOpacity>
-                    <Text style={styles.userText}>{name}</Text>
+
                     <View
                       style={{
                         flex: 0,
@@ -218,6 +237,7 @@ export const friendRenderMarkers = () => {
 
     return friendsRenderedMarkers;
   } else {
+    console.log("No Markers to Render");
     return <Marker coordinate={{ latitude: 55, longitude: 55 }} />;
   }
 };
@@ -225,7 +245,7 @@ export const friendRenderMarkers = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(32,32,32, 0.9)",
+    backgroundColor: "rgba(32,32,32, 1)",
   },
   touchable: {
     backgroundColor: "#04da12",

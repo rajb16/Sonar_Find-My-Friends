@@ -13,29 +13,38 @@ import _ from "lodash";
 import askLocation, { myMarker } from "./askLocation";
 import ModalOverlay from "./ModalOverlay";
 import {} from "react-native-maps";
-import { renderMarkers, localIcons } from "./renderMarkers.js";
+import { Video, ResizeMode } from "expo-av";
+import { sendFriendRequest, acceptFriendRequest } from "./friendFunctions";
+import { getDoc, collection, onSnapshot } from "firebase/firestore";
+import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
+import { renderMarkers } from "./renderMarkers.js";
 import { friendRenderMarkers } from "./renderFriendMarker.js";
 
 export default function HomeScreen() {
-  
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const onPlusPress = () => {
-    setModalVisible(!modalVisible);
-    console.log("modalVisible");
-  };
-
   {
     askLocation();
   }
 
-  const changeIcon = () => {
-    let img;
-    let val = false;
+  const logoloading = () => {
+    // let img;
+    var val = false;
     myMarker.latitude > 0 ? (val = true) : (val = false);
-    val ? (img = localIcons.markerImg) : (img = localIcons.logo);
+    // val ? (img = localIcons.markerImg) : (img = localIcons.logo);
+    if (!val) {
+      return (
+        <View style={{ justifyContent: "center" }}>
+          <Marker coordinate={myMarker}>
+            <Image
+              // source={require("./images/marker.png")}
+              source={localIcons.logo}
+              style={{ height: 300, width: 300 }}
+            />
+          </Marker>
+        </View>
+      );
+    }
 
-    return img;
+    // return img;
   };
   const changeIconHeight = () => {
     let val = false;
@@ -53,6 +62,12 @@ export default function HomeScreen() {
 
     return width;
   };
+  /** Temp icons dictionary. it will be replaced by firebase */
+
+  const localIcons = {
+    logo: require("./images/logo.gif"),
+    markerImg: require("./images/marker.png"),
+  };
 
   return (
     <View style={styles.container}>
@@ -68,13 +83,18 @@ export default function HomeScreen() {
       >
         {renderMarkers()}
         {friendRenderMarkers()}
+        {/* {image && (
+            <Image source={{ uri: image }} style={{ width: 35, height: 35 }} />
+          )} */}
 
-        <Marker coordinate={myMarker}>
-          <Image
-            source={changeIcon()}
-            style={{ height: 35, width: 35 }}
-          />
-        </Marker>
+        <View>
+          <Marker coordinate={myMarker}>
+            <Image source={localIcons.logo} style={{ height: 45, width: 45 }} />
+          </Marker>
+        </View>
+        <View style={{ justifyContent: "center", marginBottom: "-125%" }}>
+          {logoloading()}
+        </View>
       </MapView>
       <View>{ModalOverlay()}</View>
     </View>
