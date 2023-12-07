@@ -4,19 +4,12 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableOpacity,
-  Modal,
-  Text,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import askLocation, { myMarker } from "./askLocation";
 import ModalOverlay from "./ModalOverlay";
 import {} from "react-native-maps";
-import { Video, ResizeMode } from "expo-av";
-import { sendFriendRequest, acceptFriendRequest } from "./friendFunctions";
-import { getDoc, collection, onSnapshot } from "firebase/firestore";
-import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
 import { renderMarkers } from "./renderMarkers.js";
 import { friendRenderMarkers } from "./renderFriendMarker.js";
 
@@ -26,16 +19,14 @@ export default function HomeScreen() {
   }
 
   const logoloading = () => {
-    // let img;
     var val = false;
     myMarker.latitude > 0 ? (val = true) : (val = false);
-    // val ? (img = localIcons.markerImg) : (img = localIcons.logo);
+
     if (!val) {
       return (
         <View style={{ justifyContent: "center" }}>
           <Marker coordinate={myMarker}>
             <Image
-              // source={require("./images/marker.png")}
               source={localIcons.logo}
               style={{ height: 300, width: 300 }}
             />
@@ -44,7 +35,6 @@ export default function HomeScreen() {
       );
     }
 
-    // return img;
   };
   const changeIconHeight = () => {
     let val = false;
@@ -62,7 +52,6 @@ export default function HomeScreen() {
 
     return width;
   };
-  /** Temp icons dictionary. it will be replaced by firebase */
 
   const localIcons = {
     logo: require("./images/logo.gif"),
@@ -83,9 +72,6 @@ export default function HomeScreen() {
       >
         {renderMarkers()}
         {friendRenderMarkers()}
-        {/* {image && (
-            <Image source={{ uri: image }} style={{ width: 35, height: 35 }} />
-          )} */}
 
         <View>
           <Marker coordinate={myMarker}>

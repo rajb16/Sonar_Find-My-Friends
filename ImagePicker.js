@@ -32,7 +32,6 @@ export default function PickImage() {
       (snapshot) => {
         snapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
-            // console.log("New file", change.doc.data());
             setFiles((prevFiles) => [...prevFiles, change.doc.data()]);
           }
         });
@@ -151,14 +150,6 @@ export default function PickImage() {
               <TouchableOpacity style={styles.cameraButton} onPress={pickImage}>
                 <Text style={styles.touchableText}>📷</Text>
               </TouchableOpacity>
-              {/* <View style={styles.imageContainer}>
-                {image && (
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 300, height: 300 }}
-                  />
-                )}
-              </View> */}
             </View>
           </View>
         </TouchableOpacity>

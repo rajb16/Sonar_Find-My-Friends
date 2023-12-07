@@ -14,12 +14,6 @@ import { Video, ResizeMode } from "expo-av";
 import { getAuth } from "firebase/auth";
 import fetchUserPosts from "./fetchUserPosts.js";
 
-// import askLocation, { myMarker } from "./askLocation";
-/**
- *  Temp list containing the ID, location coordinates, and
- *  username of a user
- */
-
 export const renderMarkers = () => {
   const onResultChange = (newResult) => {
     const userPostMarkerList = [];
@@ -31,15 +25,11 @@ export const renderMarkers = () => {
   const userPosts = fetchUserPosts(10000, onResultChange);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   var [val, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [flag, setFlag] = useState(true);
-  const [result, setResult] = useState([]);
 
   const auth = getAuth();
   const user = auth.currentUser;
-  const uid = user.uid;
 
   useEffect(() => {
     console.log("user marker reloaded");
@@ -85,7 +75,6 @@ export const renderMarkers = () => {
                     isLooping
                     useNativeControls={true}
                     shouldPlay
-                    // onReadyForDisplay={}
                   />
                 </View>
               </View>
@@ -165,7 +154,6 @@ export const renderMarkers = () => {
                 >
                   <View style={{ backgroundColor: "rgba(0,0,0, 1)" }}>
                     <View
-                    // style={{ flexDirection: "row", justifyContent: "center" }}
                     >
                       <TouchableOpacity
                         style={styles.backModal}
@@ -234,7 +222,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0, 1)",
   },
   touchable: {
-    // backgroundColor: "orange",
     backgroundColor: "#ffd500",
     width: 38,
     height: 38,
@@ -244,10 +231,6 @@ const styles = StyleSheet.create({
     borderWidth: 1.3,
   },
   backModal: {
-    // backgroundColor: "orange",
-    // left: 5,
-    // top: 45,
-    // position: "absolute",
     backgroundColor: "#f0da37",
     width: 45,
     height: 45,
@@ -267,7 +250,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 40,
     color: "white",
-    // marginTop: "10%",
   },
   vidcontainer: {
     justifyContent: "center",
