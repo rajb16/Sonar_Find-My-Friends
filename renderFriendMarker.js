@@ -11,13 +11,8 @@ import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import {} from "react-native-maps";
 import { Video, ResizeMode } from "expo-av";
-
-import { getUserPosts, getFriendPosts } from "./getPosts.js";
-import { getAuth } from "firebase/auth";
-import { getDocs } from "firebase/firestore";
-import { postWait } from "./HomeScreen.js";
-import { getFriends } from "./friendFunctions.js";
 import fetchFriendsPosts from "./fetchFriendsPosts.js";
+
 export const friendRenderMarkers = () => {
   const onResultChange = (newResult) => {
     setFriendData(newResult);
@@ -37,7 +32,6 @@ export const friendRenderMarkers = () => {
 
   const displyMedia = () => {
     if (!selectedFriend) {
-      // console.log("empty");
       return null;
     } else {
       const { fileType, url, name } = selectedFriend;
@@ -59,7 +53,6 @@ export const friendRenderMarkers = () => {
           </View>
         );
       } else if (fileType === "video") {
-        // const videoRef = useRef(null);
         return (
           <View>
             <Text style={styles.userText}>{name}</Text>
@@ -71,7 +64,6 @@ export const friendRenderMarkers = () => {
                 isLooping
                 useNativeControls={true}
                 shouldPlay
-                // onReadyForDisplay={}
               />
             </View>
           </View>
@@ -79,46 +71,6 @@ export const friendRenderMarkers = () => {
       }
     }
   };
-
-  // const displayMediaHomeScreen = () => {
-  //   if (value === undefined) {
-  //     return;
-  //   } else {
-  //     // console.log(lastElementId[0].fileType);
-  //     if (fileType === "image") {
-  //       return (
-  //         <Image
-  //           source={{ uri: url }}
-  //           style={{
-  //             height: 30,
-  //             width: 30,
-  //             borderRadius: 30,
-  //             borderColor: "rgba(0,0,0,1.0)",
-  //             borderWidth: 0.5,
-  //           }}
-  //         />
-  //       );
-  //     } else if (fileType === "video") {
-  //       // const player = useRef(null);
-  //       return (
-  //         <View style={styles.vidcontainer}>
-  //           <Video
-  //             source={{ uri: url }}
-  //             // ref={player}
-  //             paused={true}
-  //             style={{
-  //               height: 30,
-  //               width: 30,
-  //               borderRadius: 30,
-  //               borderColor: "rgba(0,0,0,1.0)",
-  //               borderWidth: 0.5,
-  //             }}
-  //           />
-  //         </View>
-  //       );
-  //     }
-  //   }
-  // };
 
   const handleBack = () => {
     navigation.goBack();
@@ -130,13 +82,11 @@ export const friendRenderMarkers = () => {
   if (friendsData.length !== 0 && typeof friendsData[0] !== "undefined") {
     const friendsRenderedMarkers = _.map(friendsData, (value) => {
       const { name, createdAt, fileType, lat, long, postId, url } = value;
-      // console.log(createdAt, fileType, lat, long, postId);
 
       const displayMediaHomeScreen = () => {
         if (value === undefined) {
           return;
         } else {
-          // console.log(lastElementId[0].fileType);
           if (fileType === "image") {
             return (
               <Image
@@ -151,27 +101,8 @@ export const friendRenderMarkers = () => {
               />
             );
           } else if (fileType === "video") {
-            // const player = useRef(null);
             return (
               <View style={styles.vidcontainer}>
-                {/* <Video
-                  source={{ uri: url }}
-                  // ref={player}
-                  shouldPlay
-                  useNativeControls={true}
-                  isMuted={true}
-                  paused={false}
-                  resizeMode={ResizeMode.CONTAIN}
-                  isLooping
-                  style={styles.video}
-                  // style={{
-                  //   height: 30,
-                  //   width: 30,
-                  //   borderRadius: 30,
-                  //   borderColor: "rgba(0,0,0,1.0)",
-                  //   borderWidth: 0.5,
-                  // }}
-                /> */}
                 <View
                   style={{
                     height: 30,
@@ -194,16 +125,12 @@ export const friendRenderMarkers = () => {
         }
       };
 
-      // console.log(lati, longi);
       var lati = lat || 0;
       var longi = long || 0;
-      // console.log(lati, longi);
-      //   try {
-      // if (typeof lati !== "undefined" && lati) {
+
       return (
         <Marker
           key={postId}
-          // title={username}
           coordinate={{
             latitude: lati,
             longitude: longi,
@@ -228,7 +155,6 @@ export const friendRenderMarkers = () => {
                     alignItems: "center",
                   }}
 
-                  // transparent={true}
                 >
                   <View style={{ backgroundColor: "rgba(0,0,0, 1)" }}>
                     <TouchableOpacity
@@ -267,13 +193,11 @@ export const friendRenderMarkers = () => {
                   borderRadius: 5,
                   alignSelf: "center",
                   alignContent: "center",
-                  // color: "white",
                   borderWidth: 1.2,
                   borderColor: "rgba(0,0,0,1)",
                   fontSize: 14,
                   color: "#FFFFFF",
                   paddingLeft: "1%",
-                  // paddingRight: ".5%",
                   textShadowColor: "#585858",
                   textShadowOffset: { width: 5, height: 5 },
                   textShadowRadius: 50,
@@ -300,7 +224,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(32,32,32, 1)",
   },
   touchable: {
-    // backgroundColor: "orange",
     backgroundColor: "#04da12",
     width: 38,
     height: 38,
@@ -310,7 +233,6 @@ const styles = StyleSheet.create({
     borderWidth: 1.3,
   },
   backModal: {
-    // backgroundColor: "orange",
     backgroundColor: "#f0da37",
     width: 45,
     height: 45,
@@ -320,8 +242,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    // marginRight: "5%",
-    // visibility: plusVisible ? "visible" : "hidden",
   },
   touchableText: {
     alignSelf: "center",
@@ -334,7 +254,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
   vidcontainer: {
-    // flex: 1,
     justifyContent: "center",
   },
   video: {
@@ -348,6 +267,5 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 30,
-    // backgroundColor: "rgba(0,0,0, 1)",
   },
 });
