@@ -11,7 +11,6 @@ import { Callout } from "react-native-maps";
 import Entypo from "react-native-vector-icons/Entypo";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import PickImage from "./ImagePicker.js";
 import { useNavigation } from "@react-navigation/native";
@@ -50,15 +49,8 @@ export default function ModalOverlay() {
               name="user-friends"
               size={20}
               color="#000000"
-              // style={{ shadowOpacity: 5 }}
             />
-            {/* <Text
-              style={{
-                fontSize: 35,
-              }}
-            >
-              🤝
-            </Text> */}
+
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -77,27 +69,16 @@ export default function ModalOverlay() {
               name="plus"
               size={35}
               color="#000000"
-              // style={{ shadowOpacity: 5 }}
             />
-            {/* <Text
-              style={{
-                fontSize: 40,
-                marginBottom: "20%",
-              }}
-            >
-              +
-            </Text> */}
           </View>
         </TouchableOpacity>
 
         <View>
           <Modal
-            // animationType="slide"
             transparent={true}
             visible={modalVisible}
             animationType="fade"
             onRequestClose={() => {
-              // Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
               setPlusVisible(!plusVisible);
             }}
@@ -121,26 +102,16 @@ export default function ModalOverlay() {
                     justifyContent: "center",
                   }}
                 >
-                  {/* <Text
-                    style={{
-                      fontSize: 40,
-                    }}
-                  >
-                    x
-                  </Text> */}
                   <MaterialIcons
                     name="close"
                     size={35}
                     color="#000000"
-                    // style={{ shadowOpacity: 5 }}
                   />
                 </View>
               </TouchableOpacity>
             </View>
           </Modal>
         </View>
-
-        {/* </Entypo.Button> */}
       </View>
     </Callout>
   );
@@ -166,9 +137,7 @@ const styles = StyleSheet.create({
   modalPlus: {
     width: 50,
     height: 140,
-    // backgroundColor: "rgba( 50, 65, 96, 0.8)",
     backgroundColor: "#02c47d",
-    // borderWidth: 2,
     marginLeft: "84%",
 
     marginTop: "127%",
@@ -183,14 +152,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalX: {
-    // backgroundColor: "orange",
     backgroundColor: "#f0da37",
     width: 55,
     height: 55,
     borderRadius: 100,
-    // marginRight: 100,
     marginTop: "85%",
-    // justifyContent: "center",
     alignSelf: "center",
 
     borderWidth: 1,
@@ -206,7 +172,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   touchable: {
-    // backgroundColor: "orange",
     backgroundColor: "#f0da37",
     width: 55,
     height: 55,
@@ -223,7 +188,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   touchableFriends: {
-    // backgroundColor: "orange",
     backgroundColor: "#f0da37",
     width: 55,
     height: 55,
