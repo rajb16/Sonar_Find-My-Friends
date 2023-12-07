@@ -47,7 +47,6 @@ const fetchFriendsPosts = (interval = 10000, onResultChange) => {
       setResult(newResult);
       onResultChange(newResult);
     } catch (error) {
-      // Handle errors
       console.error(error);
     }
   };

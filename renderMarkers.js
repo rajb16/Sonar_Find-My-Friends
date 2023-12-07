@@ -11,12 +11,7 @@ import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import {} from "react-native-maps";
 import { Video, ResizeMode } from "expo-av";
-
-import { getUserPosts, getFriendPosts } from "./getPosts.js";
 import { getAuth } from "firebase/auth";
-import { getDocs } from "firebase/firestore";
-import { postWait } from "./HomeScreen.js";
-import { getFriends } from "./friendFunctions.js";
 import fetchUserPosts from "./fetchUserPosts.js";
 
 /** Temp icons dictionary. it will be replaced by firebase */
@@ -30,11 +25,7 @@ export const localIcons = {
   loading: require("./images/earth.gif"),
   video: "./images/burnout.mp4",
 };
-// import askLocation, { myMarker } from "./askLocation";
-/**
- *  Temp list containing the ID, location coordinates, and
- *  username of a user
- */
+
 
 const markerList = [
   {
@@ -112,17 +103,14 @@ export const renderMarkers = () => {
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
-  // console.log(val, val.length, typeof val);
   if (val.length !== 0 && typeof val[0] !== "undefined") {
     const renderedMarkers = _.map(val, (marker) => {
       const { name, createdAt, fileType, lat, long, postId, url } = marker;
 
       const displyMedia = () => {
         if (marker === undefined) {
-          // console.log("empty");
           return;
         } else {
-          // console.log(lastElementId[0].fileType);
           if (fileType === "image") {
             return (
               <Image
@@ -138,17 +126,15 @@ export const renderMarkers = () => {
               />
             );
           } else if (fileType === "video") {
-            // const videoRef = useRef(null);
             return (
               <View style={styles.vidcontainer}>
                 <Video
-                  source={{ uri: url }} // the video file
+                  source={{ uri: url }} 
                   resizeMode={ResizeMode.CONTAIN}
                   style={styles.video}
                   isLooping
                   useNativeControls={true}
                   shouldPlay
-                  // onReadyForDisplay={}
                 />
               </View>
             );
@@ -160,7 +146,6 @@ export const renderMarkers = () => {
         if (marker === undefined) {
           return;
         } else {
-          // console.log(lastElementId[0].fileType);
           if (fileType === "image") {
             return (
               <Image
@@ -175,12 +160,10 @@ export const renderMarkers = () => {
               />
             );
           } else if (fileType === "video") {
-            // const player = useRef(null);
             return (
               <View style={styles.vidcontainer}>
                 <Video
                   source={{ uri: url }}
-                  // ref={player}
                   paused={true}
                   style={{
                     height: 30,
@@ -196,16 +179,12 @@ export const renderMarkers = () => {
         }
       };
 
-      // console.log(lati, longi);
       var lati = lat || 0;
       var longi = long || 0;
-      // console.log(lati, longi);
-      //   try {
-      // if (typeof lati !== "undefined" && lati) {
+
       return (
         <Marker
           key={postId}
-          // title={username}
           coordinate={{
             latitude: lati,
             longitude: longi,
@@ -228,7 +207,6 @@ export const renderMarkers = () => {
                     justifyContent: "center",
                     alignItems: "center",
                   }}
-                  // transparent={true}
                 >
                   <View style={{ backgroundColor: "rgba(0,0,0, 0.9)" }}>
                     <TouchableOpacity
@@ -267,13 +245,11 @@ export const renderMarkers = () => {
                   borderRadius: 5,
                   alignSelf: "center",
                   alignContent: "center",
-                  // color: "white",
                   borderWidth: 1.2,
                   borderColor: "rgba(0,0,0,1)",
                   fontSize: 14,
                   color: "#FFFFFF",
                   paddingLeft: "1%",
-                  // paddingRight: ".5%",
                   textShadowColor: "#585858",
                   textShadowOffset: { width: 5, height: 5 },
                   textShadowRadius: 50,
@@ -299,7 +275,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(32,32,32, 0.9)",
   },
   touchable: {
-    // backgroundColor: "orange",
     backgroundColor: "#04da12",
     width: 38,
     height: 38,
@@ -309,7 +284,6 @@ const styles = StyleSheet.create({
     borderWidth: 1.3,
   },
   backModal: {
-    // backgroundColor: "orange",
     backgroundColor: "#f0da37",
     width: 45,
     height: 45,
@@ -319,8 +293,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    // marginRight: "5%",
-    // visibility: plusVisible ? "visible" : "hidden",
   },
   touchableText: {
     alignSelf: "center",
@@ -333,7 +305,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
   vidcontainer: {
-    // flex: 1,
     justifyContent: "center",
   },
   video: {
@@ -347,6 +318,5 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 30,
-    // backgroundColor: "rgba(0,0,0, 1)",
   },
 });

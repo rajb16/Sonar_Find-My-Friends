@@ -3,11 +3,8 @@ import {
   collection,
   query,
   getDocs,
-  doc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import React, { useState, useRef, useEffect } from "react";
-import { getFriends } from "./friendFunctions";
 
 const auth = getAuth();
 const user = auth.currentUser;
@@ -18,13 +15,10 @@ export async function getUserPosts(userId) {
     // Reference to the user's subcollection within the "files" collection
     const userFilesCollection = collection(db, "files", userId, "userFiles");
 
-    // Create a query  to get all documents in the user's subcollection
     const q = query(userFilesCollection);
 
-    // Execute  query
     const querySnapshot = await getDocs(q);
 
-    // Put posts in array
     const userPosts = [];
     querySnapshot.forEach((doc) => {
       userPosts.push({ postId: doc.id, ...doc.data() });
@@ -39,8 +33,6 @@ export async function getUserPosts(userId) {
       return 1; // return 1 here for DESC Order
     });
 
-    // sorted[0].push(...lastElementId);
-    // console.log(sorted[0]);
     return sorted;
   } catch (error) {
     console.error("Error getting user posts:", error);
