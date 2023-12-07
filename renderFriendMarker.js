@@ -11,13 +11,8 @@ import React, { useState, useRef, useEffect } from "react";
 import _ from "lodash";
 import {} from "react-native-maps";
 import { Video, ResizeMode } from "expo-av";
-
-import { getUserPosts, getFriendPosts } from "./getPosts.js";
-import { getAuth } from "firebase/auth";
-import { getDocs } from "firebase/firestore";
-import { postWait } from "./HomeScreen.js";
-import { getFriends } from "./friendFunctions.js";
 import fetchFriendsPosts from "./fetchFriendsPosts.js";
+
 export const friendRenderMarkers = () => {
   const onResultChange = (newResult) => {
     setFriendData(newResult);
@@ -69,7 +64,6 @@ export const friendRenderMarkers = () => {
                 isLooping
                 useNativeControls={true}
                 shouldPlay
-                // onReadyForDisplay={}
               />
             </View>
           </View>
@@ -109,24 +103,6 @@ export const friendRenderMarkers = () => {
           } else if (fileType === "video") {
             return (
               <View style={styles.vidcontainer}>
-                {/* <Video
-                  source={{ uri: url }}
-                  // ref={player}
-                  shouldPlay
-                  useNativeControls={true}
-                  isMuted={true}
-                  paused={false}
-                  resizeMode={ResizeMode.CONTAIN}
-                  isLooping
-                  style={styles.video}
-                  // style={{
-                  //   height: 30,
-                  //   width: 30,
-                  //   borderRadius: 30,
-                  //   borderColor: "rgba(0,0,0,1.0)",
-                  //   borderWidth: 0.5,
-                  // }}
-                /> */}
                 <View
                   style={{
                     height: 30,
