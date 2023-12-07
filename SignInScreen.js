@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH, FIREBASE_APP, FIREBASE_DB } from "./firebaseConfig.js";
 import {
@@ -7,6 +7,9 @@ import {
   createUserWithEmailAndPassword,
 } from "@firebase/auth";
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
+const localIcons = {
+  logo: require("./images/logo.gif"),
+};
 
 export default function SignInScreen() {
   const navigation = useNavigation();
@@ -66,7 +69,9 @@ export default function SignInScreen() {
 
   return (
     <View style={styles.screen}>
-      <Text style={styles.title}>Find My Friend</Text>
+      <Image source={localIcons.logo} style={{ height: 150, width: 150 }} />
+      <Text style={{ fontSize: 45 }}>SONAR</Text>
+      <Text style={styles.title}>Find My Friends</Text>
       <TextInput
         style={styles.input}
         value={email}
@@ -86,8 +91,8 @@ export default function SignInScreen() {
         autoComplete="password"
       />
       <View style={styles.buttons}>
-        <Button title="Sign-In" onPress={signIn} />
-        <Button title="Sign-Up" onPress={createAccount} />
+        <Button title="Sign-In" onPress={signIn} color="#02c47d" />
+        <Button title="Sign-Up" onPress={createAccount} color="#02c47d" />
       </View>
     </View>
   );
@@ -98,23 +103,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#00bfff",
   },
   title: {
-    fontSize: 21,
+    fontSize: 14,
     marginBottom: 30,
   },
   input: {
     width: 300,
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: "#6d69c3",
+    borderColor: "#000000",
     marginVertical: 10,
     padding: 15,
+    backgroundColor: "#ffffff",
   },
   buttons: {
     width: 150,
     marginTop: 30,
     flexDirection: "row",
     justifyContent: "space-around",
+    // backgroundColor: "#000000",
   },
 });

@@ -122,12 +122,11 @@ export const renderMarkers = () => {
               />
             );
           } else if (fileType === "video") {
-            const player = useRef(null);
             return (
               <View style={styles.vidcontainer}>
                 <Video
                   source={{ uri: url }}
-                  ref={player}
+                  // ref={player}
                   paused={true}
                   style={{
                     height: 30,
@@ -136,7 +135,6 @@ export const renderMarkers = () => {
                     borderColor: "rgba(0,0,0,1.0)",
                     borderWidth: 0.5,
                   }}
-                  onLoad={() => player.current.seekTo(1)}
                 />
               </View>
             );
@@ -241,7 +239,7 @@ export const renderMarkers = () => {
 
     return renderedMarkers;
   } else {
-    return <Marker coordinate={{ latitude: 515, longitude: 515 }} />;
+    return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
 };
 
