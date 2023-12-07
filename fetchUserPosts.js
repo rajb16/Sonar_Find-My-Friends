@@ -26,7 +26,6 @@ const fetchUserPosts = (interval = 10000, onResultChange) => {
       setResult(newResult);
       onResultChange(newResult); // Notify the updated result
     } catch (error) {
-      // Handle error
       console.error(error);
     }
   };

@@ -1,20 +1,12 @@
 import React, { useState, useEffect, Component } from "react";
-
 import {
   View,
   StyleSheet,
-  Image,
   Text,
-  Button,
   TouchableOpacity,
-  SafeAreaView,
-  Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Callout } from "react-native-maps";
-import Entypo from "react-native-vector-icons/Entypo";
-// import { storage } from "./firebaseConfig";
-
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {
   addDoc,
@@ -23,24 +15,23 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-
 import { FIREBASE_DB, storage, FIREBASE_AUTH } from "./firebaseConfig.js";
-import { Video } from "expo-av";
-import { UploadingAndroid } from "./components/UploadingAndroid.js";
 import { myMarker } from "./askLocation.js";
 import { getAuth } from "firebase/auth";
+
 export default function PickImage() {
+
   const [image, setImage] = useState("");
   const [video, setVideo] = useState("");
   const [progress, setProgress] = useState(0);
   const [files, setFiles] = useState([]);
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(FIREBASE_DB, "files"),
       (snapshot) => {
         snapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
-            // console.log("New file", change.doc.data());
             setFiles((prevFiles) => [...prevFiles, change.doc.data()]);
           }
         });
@@ -53,8 +44,6 @@ export default function PickImage() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      // aspect: [3, 4],
-      // quality: 1,
     });
 
     if (!result.canceled) {
@@ -107,10 +96,9 @@ export default function PickImage() {
 
           const userRef = doc(FIREBASE_DB, "users", user.uid);
           const userDoc = await getDoc(userRef);
-          // console.log(userDoc);
+          
           if (userDoc.exists()) {
             const name = userDoc.data().name || [];
-            // console.log(name);
             await saveRecord(
               name,
               fileType,
@@ -162,14 +150,6 @@ export default function PickImage() {
               <TouchableOpacity style={styles.cameraButton} onPress={pickImage}>
                 <Text style={styles.touchableText}>📷</Text>
               </TouchableOpacity>
-              {/* <View style={styles.imageContainer}>
-                {image && (
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 300, height: 300 }}
-                  />
-                )}
-              </View> */}
             </View>
           </View>
         </TouchableOpacity>

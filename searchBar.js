@@ -1,4 +1,3 @@
-// SearchScreen.js
 import React, { useState } from "react";
 import {
   View,
@@ -156,9 +155,7 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: "#f0da37",
-    // alignSelf: "center",
     fontSize: 30,
-    // marginRight: "10%",
   },
 });
 

@@ -1,6 +1,6 @@
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
-// import _ from "lodash";
+
 let currentlat = 1;
 let currentLong = 1;
 let myMarker = {
@@ -15,10 +15,10 @@ export default function askLocation() {
   const [lat, setLatitude] = useState(0);
   const [long, setLongitude] = useState(0);
   const [time, setTime] = useState(Date.now());
+
   const getPermissions = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      // console.log("Permission status: ", status);
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
@@ -31,7 +31,6 @@ export default function askLocation() {
         location.coords.latitude !== null &&
         location.coords.longitude !== null
       ) {
-        // console.log("Current Location Stored");
         setLatitude(location.coords.latitude);
 
         setLongitude(location.coords.longitude);
