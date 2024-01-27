@@ -32,7 +32,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "rxj"
     },
     "android": {
       "adaptiveIcon": {
@@ -43,6 +44,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4fa80306-eb0d-4502-8419-4874af445f10"
+      }
     }
   }
 }

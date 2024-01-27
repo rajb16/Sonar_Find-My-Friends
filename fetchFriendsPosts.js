@@ -44,7 +44,8 @@ const fetchFriendsPosts = (interval = 10000, onResultChange) => {
       friendPostMarkerList.push(...fetchedPosts);
       // console.log(friendPostMarkerList);
       if (typeof friendPostMarkerList[0] === "undefined") {
-        newResult.push(friendPostMarkerList[1]);
+        // newResult.push(friendPostMarkerList[]);
+        console.log("friendPostMarkerList: " + friendPostMarkerList);
       } else {
         friendPostMarkerList.map((value) => {
           newResult.push(value);

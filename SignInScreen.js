@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { FIREBASE_AUTH, FIREBASE_DB } from "./firebaseConfig.js";
+import { FIREBASE_APP, FIREBASE_AUTH, FIREBASE_DB } from "./firebaseConfig.js";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  getAuth,
+  setPersistence,
+  browserSessionPersistence,
+  Persistence,
+  onAuthStateChanged,
+  browserLocalPersistence,
 } from "@firebase/auth";
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
 const localIcons = {
@@ -15,7 +21,16 @@ export default function SignInScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const auth = getAuth(FIREBASE_APP);
+  useEffect(() => {
+    let subscriber = onAuthStateChanged(auth, (user) => {
+      console.log(auth.currentUser); //returns null now
+      if (user) {
+        navigation.navigate("Home");
+      }
+    });
+    return subscriber;
+  }, []);
   const createAccount = async () => {
     try {
       const response = await createUserWithEmailAndPassword(
@@ -47,6 +62,7 @@ export default function SignInScreen() {
 
   const signIn = async () => {
     try {
+      // await setPersistence(FIREBASE_AUTH, browserSessionPersistence);
       const response = await signInWithEmailAndPassword(
         FIREBASE_AUTH,
         email,
@@ -89,8 +105,8 @@ export default function SignInScreen() {
         autoComplete="password"
       />
       <View style={styles.buttons}>
-        <Button title="Sign-In" onPress={signIn} color="#02c47d" />
-        <Button title="Sign-Up" onPress={createAccount} color="#02c47d" />
+        <Button title="Sign-In" onPress={signIn} color="#3d43fa" />
+        <Button title="Sign-Up" onPress={createAccount} color="#3d43fa" />
       </View>
     </View>
   );

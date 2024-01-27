@@ -25,7 +25,7 @@ export const renderMarkers = () => {
   const userPosts = fetchUserPosts(10000, onResultChange);
 
   const [isLoading, setIsLoading] = useState(true);
-  var [val, setData] = useState([]);
+  var [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const auth = getAuth();
@@ -33,13 +33,13 @@ export const renderMarkers = () => {
 
   useEffect(() => {
     console.log("user marker reloaded");
-  }, [val]);
+  }, [data]);
 
   if (isLoading) {
     return <Marker coordinate={{ latitude: 155, longitude: 515 }} />;
   }
-  if (val.length !== 0 && typeof val[0] !== "undefined") {
-    const renderedMarkers = _.map(val, (marker) => {
+  if (data.length !== 0 && typeof data[0] !== "undefined") {
+    const renderedMarkers = _.map(data, (marker) => {
       const { name, createdAt, fileType, lat, long, postId, url } = marker;
 
       const displyMedia = () => {
@@ -103,7 +103,7 @@ export const renderMarkers = () => {
           } else if (fileType === "video") {
             return (
               <View style={styles.vidcontainer}>
-                <Video
+                {/* <Video
                   source={{ uri: url }}
                   // ref={player}
                   paused={true}
@@ -114,7 +114,23 @@ export const renderMarkers = () => {
                     borderColor: "rgba(0,0,0,1.0)",
                     borderWidth: 0.5,
                   }}
-                />
+                /> */}
+                <View
+                  style={{
+                    height: 30,
+                    width: 30,
+                    borderRadius: 30,
+                    borderColor: "#000000",
+                    borderWidth: 0.5,
+                    backgroundColor: "#115284",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ marginTop: "-5%" }}>
+                    <Text style={{ fontSize: 16 }}>▶️</Text>
+                  </View>
+                </View>
               </View>
             );
           }
@@ -151,8 +167,7 @@ export const renderMarkers = () => {
                   }}
                 >
                   <View style={{ backgroundColor: "rgba(0,0,0, 1)" }}>
-                    <View
-                    >
+                    <View>
                       <TouchableOpacity
                         style={styles.backModal}
                         onPress={() => {

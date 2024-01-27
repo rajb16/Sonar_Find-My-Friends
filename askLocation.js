@@ -24,9 +24,7 @@ export default function askLocation() {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Lowest,
-      });
+      let location = await Location.getCurrentPositionAsync({});
       if (
         location.coords.latitude !== null &&
         location.coords.longitude !== null
@@ -57,11 +55,11 @@ export default function askLocation() {
   if (location) {
     text = JSON.stringify(location);
   }
-  if (+currentLong.toFixed(4) !== +long.toFixed(4)) {
+  if (+currentLong.toFixed(3) !== +long.toFixed(3)) {
     currentLong = long;
     console.log("Adjusting Longitude to: ", currentLong);
   }
-  if (+currentlat.toFixed(4) !== +lat.toFixed(4)) {
+  if (+currentlat.toFixed(3) !== +lat.toFixed(3)) {
     currentlat = lat;
     console.log("Adjusting Latitude to: ", currentlat);
   }
