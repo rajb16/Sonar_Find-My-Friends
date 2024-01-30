@@ -1,10 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Callout } from "react-native-maps";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -20,7 +15,6 @@ import { myMarker } from "./askLocation.js";
 import { getAuth } from "firebase/auth";
 
 export default function PickImage() {
-
   const [image, setImage] = useState("");
   const [video, setVideo] = useState("");
   const [progress, setProgress] = useState(0);
@@ -43,7 +37,7 @@ export default function PickImage() {
   async function pickImage() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      // allowsEditing: true,
     });
 
     if (!result.canceled) {
@@ -57,7 +51,6 @@ export default function PickImage() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
-      aspect: [3, 4],
       quality: 1,
     });
 
@@ -96,7 +89,7 @@ export default function PickImage() {
 
           const userRef = doc(FIREBASE_DB, "users", user.uid);
           const userDoc = await getDoc(userRef);
-          
+
           if (userDoc.exists()) {
             const name = userDoc.data().name || [];
             await saveRecord(

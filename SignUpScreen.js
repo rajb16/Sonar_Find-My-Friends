@@ -33,7 +33,7 @@ const localIcons = {
   logo: require("./assets/logo-crop.gif"),
 };
 
-export default function SignInScreen() {
+export default function SignUpScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +42,7 @@ export default function SignInScreen() {
     let subscriber = onAuthStateChanged(auth, (user) => {
       console.log(auth.currentUser); //returns null now
       if (user) {
-        navigation.navigate("Home", { user });
+        navigation.navigate("Home");
       }
     });
     return subscriber;
@@ -76,26 +76,6 @@ export default function SignInScreen() {
     }
   };
 
-  const signIn = async () => {
-    try {
-      // await setPersistence(FIREBASE_AUTH, browserSessionPersistence);
-      const response = await signInWithEmailAndPassword(
-        FIREBASE_AUTH,
-        email,
-        password
-      );
-
-      if (response && response.user) {
-        const user = response.user;
-        console.log("User signed in successfully");
-        navigation.navigate("Home", { user: JSON.stringify(user) });
-      } else {
-        console.error("Failed to sign in. Response or user is undefined.");
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
   const [fontsLoaded, fontError] = useFonts({
     Poppins: require("./assets/fonts/Poppins-SemiBold.ttf"),
   });
@@ -167,8 +147,11 @@ export default function SignInScreen() {
           </View>
 
           <View style={styles.buttons}>
-            <TouchableOpacity onPress={signIn} style={styles.loginButton}>
-              <Text style={styles.text}>Login</Text>
+            <TouchableOpacity
+              onPress={createAccount}
+              style={styles.loginButton}
+            >
+              <Text style={styles.text}>Sign Up</Text>
             </TouchableOpacity>
           </View>
           <View
@@ -237,9 +220,9 @@ export default function SignInScreen() {
             <Text
               style={{ fontFamily: "Poppins", fontSize: 14, color: "grey" }}
             >
-              Don’t have an account?
+              Don you have an account?
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+            <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
               <Text
                 style={{
                   fontFamily: "Poppins",
@@ -248,7 +231,7 @@ export default function SignInScreen() {
                   marginLeft: 5,
                 }}
               >
-                Sign Up
+                Sign in
               </Text>
             </TouchableOpacity>
           </View>

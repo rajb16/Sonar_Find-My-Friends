@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Capstone_Project_v1",
-    "slug": "Capstone_Project_v1",
+    "name": "Sonar",
+    "slug": "Sonar",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,13 +24,15 @@
           "expo-image-picker",
           {
             "photosPermission": "The app accesses your photos to let you share them with your friends."
+          },
+          "expo-font",
+          {
+            "fonts": ["./assets/fonts/Poppins-Regular.ttf"]
           }
         ]
       ]
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "rxj"
@@ -40,7 +42,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.Capstone_Project_v1"
+      "package": "com.anonymous.Sonar"
     },
     "web": {
       "favicon": "./assets/favicon.png"

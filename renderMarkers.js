@@ -49,7 +49,6 @@ export const renderMarkers = () => {
           if (fileType === "image") {
             return (
               <View>
-                <Text style={styles.userText}>{name}</Text>
                 <Image
                   source={{
                     uri: url,
@@ -61,12 +60,13 @@ export const renderMarkers = () => {
                     resizeMode: "contain",
                   }}
                 />
+
+                <Text style={styles.userText}>{name}</Text>
               </View>
             );
           } else if (fileType === "video") {
             return (
               <View>
-                <Text style={styles.userText}>{name}</Text>
                 <View style={styles.vidcontainer}>
                   <Video
                     source={{ uri: url }} // the video file
@@ -77,6 +77,7 @@ export const renderMarkers = () => {
                     shouldPlay
                   />
                 </View>
+                <Text style={styles.userText}>{name}</Text>
               </View>
             );
           }
