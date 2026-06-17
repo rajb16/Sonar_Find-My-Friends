@@ -29,7 +29,7 @@
     "expo-status-bar": "~1.6.0",
     "firebase": "^10.5.0",
     "lodash": "^4.17.21",
-    "mysql2": "^3.6.1",
+    "mysql2": "^3.9.8",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.72.6",
